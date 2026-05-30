@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Sistema ADHD</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;padding:16px}
+  .app{max-width:780px;margin:0 auto}
+  .tabs{display:flex;gap:2px;margin-bottom:1.25rem;background:#e8e7e2;padding:3px;border-radius:10px}
+  .tab{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:7px;font-size:11px;cursor:pointer;color:#666;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit}
+  .tab i{font-size:17px}
+  .tab.active{background:#fff;color:#1a1a1a;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+  .metric{background:#f0efe9;border-radius:8px;padding:10px 12px;text-align:center}
+  .ml{font-size:10px;color:#666;margin-bottom:3px}
+  .mv{font-size:20px;font-weight:500}
+  .pw{height:5px;border-radius:99px;background:#ddd;overflow:hidden}
+  .pf{height:100%;border-radius:99px;transition:width 0.5s}
+  .xw{height:8px;border-radius:99px;background:#ddd;overflow:hidden;margin:4px 0}
+  .xf{height:100%;border-radius:99px;background:#534AB7;transition:width 0.5s}
+  .pcard{background:#f0efe9;border-radius:12px;padding:18px;text-align:center;margin-bottom:1rem}
+  .ptm{font-size:52px;font-weight:500;letter-spacing:3px;line-height:1}
+  .fcard{border:2px solid #b5d4f4;border-radius:12px;padding:14px;margin-bottom:1rem;background:#fff}
+  .titem{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:0.5px solid #e0e0e0;background:#fff;margin-bottom:5px}
+  .tchk{width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#1D9E75}
+  .ttxt{flex:1;font-size:13px;color:#1a1a1a;min-width:0;word-break:break-word}
+  .done{text-decoration:line-through;color:#aaa!important}
+  .tdel{background:none;border:none;cursor:pointer;color:#aaa;padding:2px 4px;border-radius:4px;line-height:1;display:flex;align-items:center;flex-shrink:0}
+  .tdel:hover{background:#fee;color:#c00}
+  .badge{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500;white-space:nowrap;flex-shrink:0}
+  .ba{background:#fee;color:#c00}
+  .bm{background:#fef3e2;color:#8a5c00}
+  .bb{background:#e8f5e9;color:#2e7d32}
+  .bov{background:#fee;color:#c00;font-size:10px;padding:1px 6px;border-radius:99px;font-weight:500;flex-shrink:0}
+  .arow{display:flex;gap:5px;margin-bottom:0.75rem;flex-wrap:wrap}
+  .arow input,.arow select{font-size:13px;padding:7px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit}
+  .arow input{flex:1;min-width:120px}
+  .btn{padding:7px 12px;font-size:12px;border-radius:8px;background:#fff;border:1px solid #ccc;cursor:pointer;font-weight:500;color:#1a1a1a;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;font-family:inherit}
+  .btn:hover{background:#f5f5f5}
+  .btn:active{transform:scale(0.98)}
+  .btng{background:#1D9E75;color:#fff;border-color:#1D9E75}
+  .btng:hover{background:#0F6E56;color:#fff}
+  .btnp{background:#534AB7;color:#fff;border-color:#534AB7}
+  .btnp:hover{background:#3C3489;color:#fff}
+  .btntg{background:#229ED9;color:#fff;border-color:#229ED9}
+  .btntg:hover{background:#1a85b8;color:#fff}
+  .blg{padding:10px 18px;font-size:13px;justify-content:center}
+  .kcol{border-radius:12px;padding:9px;background:#f0efe9}
+  .khead{font-size:11px;font-weight:500;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
+  .kcard{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:8px 9px;margin-bottom:5px}
+  .ktxt{font-size:12px;margin-bottom:6px;color:#1a1a1a;line-height:1.4}
+  .kbtn{font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #ddd;background:transparent;cursor:pointer;color:#666;font-family:inherit}
+  .kbtn:hover{background:#f0f0f0;color:#1a1a1a}
+  .pjcard{border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:9px;background:#fff}
+  .stl{font-size:14px;font-weight:500;margin-bottom:0.75rem}
+  .empty{text-align:center;color:#aaa;font-size:13px;padding:1.25rem 0}
+  .frow{display:flex;gap:5px;margin-bottom:0.75rem;flex-wrap:wrap}
+  .fbtn{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid #ddd;background:transparent;cursor:pointer;color:#666;font-family:inherit}
+  .fbtn.fa{background:#1a1a1a;color:#fff;font-weight:500}
+  .hdiv{border:none;border-top:1px solid #e8e8e8;margin:0.875rem 0}
+  .apf{background:#f0efe9;border-radius:8px;padding:9px;margin-bottom:0.875rem;border:1px solid #e0e0e0}
+  @keyframes fadeS{0%{opacity:0;transform:translateY(-6px)}15%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}
+  .cel{text-align:center;padding:9px;background:#e8f5e9;color:#2e7d32;border-radius:8px;margin-bottom:0.75rem;font-size:13px;font-weight:500;animation:fadeS 2.8s ease-in-out forwards}
+  .csec{border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin-bottom:1rem;background:#fff}
+  .cttl{font-size:13px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+  .capinp{width:100%;font-size:20px;padding:14px;border-radius:12px;border:2px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit;margin-bottom:12px}
+  .capinp:focus{border-color:#534AB7;outline:none}
+  .pribtns{display:flex;gap:8px;margin-bottom:12px}
+  .pribtn{flex:1;padding:9px;border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit}
+  .pralta{background:#fee;color:#c00}.pralta.sel{border-color:#E24B4A}
+  .prmedia{background:#fef3e2;color:#8a5c00}.prmedia.sel{border-color:#EF9F27}
+  .prbaja{background:#e8f5e9;color:#2e7d32}.prbaja.sel{border-color:#639922}
+  .lvbadge{display:inline-flex;align-items:center;gap:5px;background:#f0efe9;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:500}
+  .skbadge{display:inline-flex;align-items:center;gap:5px;background:#fef3e2;color:#8a5c00;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:500}
+  input[type=text],input[type=tel],input[type=time],input[type=date],select{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="app"><div style="text-align:center;padding:2.5rem;color:#888;font-size:13px">Cargando...</div></div>
+</div>
+<script>
+const DPROJ=[{id:'trabajo',name:'Trabajo',color:'#378ADD'},{id:'personal',name:'Personal',color:'#1D9E75'}];
+const LVLS=[{xp:0,n:'Arranque'},{xp:50,n:'Enfoque'},{xp:150,n:'Constancia'},{xp:300,n:'Ritmo'},{xp:500,n:'Flujo'},{xp:750,n:'Momentum'},{xp:1050,n:'Maestría'},{xp:1400,n:'Potencia'},{xp:1800,n:'Élite'},{xp:2300,n:'Leyenda'}];
+const PCOLS=['#378ADD','#1D9E75','#534AB7','#D85A30','#D4537E','#BA7517'];
+const PRC={alta:'#E24B4A',media:'#EF9F27',baja:'#639922'};
+const PRX={alta:25,media:15,baja:10};
+let S={tasks:[],tontas:[],projects:[...DPROJ],g:{xp:0,level:1,streak:0,lastDate:''},pom:{seconds:1500,running:false,sessions:0,mode:'work'},cfg:{token:'',chatId:'',dailyTime:'09:00',enabled:false,lastDaily:''}};
+let TAB='ajustes',TF='all',VW='kanban',SAP=false,cPri='media',cProj='',celMsg='';
+let pomInt=null;
+const SK='adhd_ls_v1';
+function gid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function loadS(){
+  try{const d=localStorage.getItem(SK);if(d)S=JSON.parse(d);}catch(e){}
+  if(!S.projects||!S.projects.length)S.projects=[...DPROJ];
+  if(!S.g)S.g={xp:0,level:1,streak:0,lastDate:''};
+  if(!S.pom)S.pom={seconds:1500,running:false,sessions:0,mode:'work'};
+  if(!S.cfg||!('token' in S.cfg))S.cfg={token:'',chatId:'',dailyTime:'09:00',enabled:false,lastDaily:''};
+  if(!S.tontas)S.tontas=[];
+  const td=new Date().toDateString();
+  if(S.g.lastDate!==td){const yd=new Date(Date.now()-86400000).toDateString();S.g.streak=(S.g.lastDate===yd)?S.g.streak+1:1;S.g.lastDate=td;saveS();}
+  S.pom.running=false;
+  if(S.cfg.token&&S.cfg.chatId)TAB='enfoque';
+}
+function saveS(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}}
+function pCol(p){return p?(p.color||PCOLS[Math.max(0,S.projects.findIndex(x=>x.id===p.id))%PCOLS.length]):'#888'}
+function pTsk(pid){return S.tasks.filter(t=>t.projectId===pid)}
+function pPct(pid){const ts=pTsk(pid);return ts.length?Math.round(ts.filter(t=>t.kanbanStatus==='done').length/ts.length*100):0}
+function kTsk(st){return S.tasks.filter(t=>t.kanbanStatus===st)}
+function gLv(xp){let l=0;LVLS.forEach((v,i)=>{if(xp>=v.xp)l=i});return l+1}
+function gNm(xp){let l=0;LVLS.forEach((v,i)=>{if(xp>=v.xp)l=i});return LVLS[l].n}
+function gPct(xp){const l=gLv(xp)-1;const c=LVLS[l]?.xp||0;const n=LVLS[l+1]?.xp;return n?Math.min(100,Math.round((xp-c)/(n-c)*100)):100}
+function isOD(t){return t.dueDate&&t.kanbanStatus!=='done'&&new Date(t.dueDate)<new Date(new Date().toDateString())}
+function isTD(t){return t.dueDate&&t.kanbanStatus!=='done'&&t.dueDate===new Date().toISOString().split('T')[0]}
+function fmtD(d){if(!d)return'';return new Date(d+'T12:00:00').toLocaleDateString('es',{day:'numeric',month:'short'})}
+function fmtT(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function nextTask(){
+  const p=S.tasks.filter(t=>t.kanbanStatus!=='done');if(!p.length)return null;
+  const od=p.filter(t=>isOD(t)).sort((a,b)=>PRX[b.priority]-PRX[a.priority]);if(od.length)return od[0];
+  const td=p.filter(t=>isTD(t)).sort((a,b)=>PRX[b.priority]-PRX[a.priority]);if(td.length)return td[0];
+  return p.sort((a,b)=>PRX[b.priority]-PRX[a.priority])[0];
+}
+async function sendTG(txt){
+  const{token,chatId,enabled}=S.cfg;if(!token||!chatId||!enabled)return;
+  try{await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:txt,parse_mode:'HTML'})})}catch(e){}
+}
+async function checkRem(){
+  if(!S.cfg.enabled||!S.cfg.token||!S.cfg.chatId)return;
+  const now=new Date(),td=now.toDateString();
+  if(S.cfg.dailyTime&&S.cfg.lastDaily!==td){
+    const[h,m]=S.cfg.dailyTime.split(':').map(Number);
+    if(now.getHours()*60+now.getMinutes()>=h*60+m){
+      const pend=S.tasks.filter(t=>t.kanbanStatus!=='done').length;
+      const ovd=S.tasks.filter(t=>isOD(t)).length;
+      await sendTG(`☀️ <b>Revisión diaria</b>\n${pend} tarea${pend!==1?'s':''} pendiente${pend!==1?'s':''}${ovd?`\n⚠️ ${ovd} vencida${ovd!==1?'s':''}`:''}\n\n🔥 Racha: ${S.g.streak} días | ⚡ Nv.${S.g.level} ${gNm(S.g.xp)}`);
+      S.cfg.lastDaily=td;saveS();
+    }
+  }
+  const ods=S.tasks.filter(t=>isOD(t)&&!t.tgSent);
+  for(const t of ods){await sendTG(`⚠️ <b>Tarea vencida</b>\n"${t.text}"\nPrioridad: ${t.priority}`);t.tgSent=true;}
+  if(ods.length)saveS();
+}
+function startPom(){
+  if(pomInt)return;S.pom.running=true;saveS();
+  pomInt=setInterval(async()=>{
+    if(S.pom.seconds>0){
+      S.pom.seconds--;
+      const d=document.getElementById('ptd');if(d)d.textContent=fmtT(S.pom.seconds);
+      const tot=S.pom.mode==='work'?1500:300;
+      const b=document.getElementById('ptb');if(b)b.style.width=Math.round((1-S.pom.seconds/tot)*100)+'%';
+      if(S.pom.seconds%30===0)saveS();
+    }else{
+      clearInterval(pomInt);pomInt=null;S.pom.running=false;S.pom.sessions++;
+      if(S.pom.mode==='work'){S.pom.mode='break';S.pom.seconds=300;sendTG('🍅 <b>Pomodoro completado!</b>\nDescansa 5 minutos.');}
+      else{S.pom.mode='work';S.pom.seconds=1500;sendTG('💪 <b>Descanso terminado!</b>\nA enfocarse.');}
+      saveS();render();
+    }
+  },1000);render();
+}
+function pausePom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;saveS();render()}
+function resetPom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;S.pom.seconds=S.pom.mode==='work'?1500:300;saveS();render()}
+async function gainXP(amt,msg){
+  S.g.xp+=amt;const nl=gLv(S.g.xp);
+  if(nl>S.g.level){S.g.level=nl;celMsg=`Subiste a ${gNm(S.g.xp)}! +${amt} XP`;sendTG(`🏆 <b>Nuevo nivel!</b> Ahora eres <b>${gNm(S.g.xp)}</b>`);}
+  else celMsg=msg||`+${amt} XP`;
+  saveS();
+}
+function setTab(t){TAB=t;render();if(t==='captura')setTimeout(()=>document.getElementById('cap-ti')?.focus(),60)}
+function setFilt(f){TF=f;render()}
+function togView(){VW=VW==='kanban'?'proj':'kanban';render()}
+function togAP(){SAP=!SAP;render();if(SAP)setTimeout(()=>document.getElementById('pi')?.focus(),60)}
+function setPri(p){cPri=p;render();setTimeout(()=>document.getElementById('cap-ti')?.focus(),50)}
+function setCP(v){cProj=v}
+async function addTask(px){
+  const inp=document.getElementById(`${px}-ti`);const txt=inp?.value?.trim();if(!txt)return;
+  const pri=px==='cap'?cPri:(document.getElementById(`${px}-tp`)?.value||'media');
+  const proj=px==='cap'?cProj:(document.getElementById(`${px}-tpr`)?.value||'');
+  const dd=document.getElementById(`${px}-td`)?.value||'';
+  S.tasks.push({id:gid(),text:txt,priority:pri,projectId:proj,kanbanStatus:'todo',dueDate:dd,createdAt:new Date().toISOString()});
+  if(px==='cap'){cPri='media';cProj='';}
+  saveS();render();setTimeout(()=>document.getElementById(`${px}-ti`)?.focus(),50);
+}
+async function togTask(id){
+  const t=S.tasks.find(x=>x.id===id);if(!t)return;
+  if(t.kanbanStatus==='done'){t.kanbanStatus='todo';delete t.completedDate;delete t.tgSent;}
+  else{t.kanbanStatus='done';t.completedDate=new Date().toDateString();const xp=PRX[t.priority]||10;await gainXP(xp,`Completada! +${xp} XP`);sendTG(`✅ <b>Completada:</b> "${t.text}"\n+${xp} XP | Total: ${S.g.xp} XP`);}
+  saveS();render();
+}
+function delTask(id){S.tasks=S.tasks.filter(t=>t.id!==id);saveS();render()}
+async function moveTask(id,st){
+  const t=S.tasks.find(x=>x.id===id);if(!t)return;
+  t.kanbanStatus=st;
+  if(st==='done'){t.completedDate=new Date().toDateString();const xp=PRX[t.priority]||10;await gainXP(xp);sendTG(`✅ "${t.text}" +${xp} XP`);}
+  else delete t.completedDate;
+  saveS();render();
+}
+function addProj(){
+  const name=document.getElementById('pi')?.value?.trim();if(!name)return;
+  S.projects.push({id:gid(),name,color:PCOLS[S.projects.length%PCOLS.length],createdAt:new Date().toISOString()});
+  SAP=false;saveS();render();
+}
+function delProj(id){
+  if(['trabajo','personal'].includes(id))return;
+  S.projects=S.projects.filter(p=>p.id!==id);S.tasks=S.tasks.map(t=>t.projectId===id?{...t,projectId:''}:t);
+  saveS();render();
+}
+async function fetchChatId(){
+  const tok=document.getElementById('tg-tok')?.value?.trim();
+  const m=document.getElementById('tg-msg');
+  if(!tok){if(m){m.textContent='Ingresa el token primero';m.style.color='#c00';}return;}
+  if(m){m.textContent='Buscando...';m.style.color='#888';}
+  try{
+    const res=await fetch(`https://api.telegram.org/bot${tok}/getUpdates`);
+    const data=await res.json();
+    if(!data.ok){if(m){m.textContent='Token inválido';m.style.color='#c00';}return;}
+    if(!data.result||!data.result.length){if(m){m.textContent='Envía un mensaje al bot en Telegram primero';m.style.color='#b07000';}return;}
+    const last=data.result[data.result.length-1];
+    const cid=String(last.message?.chat?.id||last.edited_message?.chat?.id||'');
+    if(!cid){if(m){m.textContent='No se encontró Chat ID — envía un mensaje al bot';m.style.color='#b07000';}return;}
+    const el=document.getElementById('tg-cid');if(el)el.value=cid;
+    if(m){m.textContent='Chat ID encontrado: '+cid;m.style.color='#2e7d32';}
+  }catch(err){if(m){m.textContent='Error de conexión';m.style.color='#c00';}}
+}
+function saveConfig(){
+  S.cfg.token=document.getElementById('tg-tok')?.value?.trim()||'';
+  S.cfg.chatId=document.getElementById('tg-cid')?.value?.trim()||'';
+  S.cfg.dailyTime=document.getElementById('cfg-time')?.value||'09:00';
+  S.cfg.enabled=document.getElementById('cfg-ena')?.checked||false;
+  saveS();
+  const m=document.getElementById('tg-msg');
+  if(m){m.textContent='Guardado';m.style.color='#2e7d32';setTimeout(()=>{if(m)m.textContent=''},3000);}
+  render();
+}
+async function testTG(){
+  const tok=document.getElementById('tg-tok')?.value?.trim();
+  const cid=document.getElementById('tg-cid')?.value?.trim();
+  const m=document.getElementById('tg-msg');
+  if(!tok||!cid){if(m){m.textContent='Necesitas token y Chat ID';m.style.color='#c00';}return;}
+  if(m){m.textContent='Enviando...';m.style.color='#888';}
+  try{
+    const res=await fetch(`https://api.telegram.org/bot${tok}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:cid,text:`🎉 <b>Sistema activo!</b>\n\n🔥 Racha: ${S.g.streak} días\n⚡ Nivel ${S.g.level}: ${gNm(S.g.xp)}\n📋 Pendientes: ${S.tasks.filter(t=>t.kanbanStatus!=='done').length} tareas\n\n¡Los recordatorios ya funcionan!`,parse_mode:'HTML'})});
+    const data=await res.json();
+    if(data.ok){if(m){m.textContent='Revisa Telegram!';m.style.color='#2e7d32';setTimeout(()=>{if(m)m.textContent=''},5000);}}
+    else{if(m){m.textContent='Error: '+(data.description||'verifica los datos');m.style.color='#c00';}}
+  }catch(err){if(m){m.textContent='Error de conexión';m.style.color='#c00';}}
+}
+function render(){
+  const app=document.getElementById('app');
+  const tabs=[['enfoque','ti-target','Enfoque'],['captura','ti-bolt','Captura'],['tareas','ti-checks','Tareas'],['tontas','ti-confetti','Tontas'],['proyectos','ti-folders','Proyectos'],['ajustes','ti-settings','Ajustes']];
+  const cv=celMsg?`<div class="cel"><i class="ti ti-star"></i> ${esc(celMsg)}</div>`:'';celMsg='';
+  app.innerHTML=`<div class="tabs">${tabs.map(([t,ic,lb])=>`<button class="tab${TAB===t?' active':''}" onclick="setTab('${t}')"><i class="ti ${ic}"></i>${lb}</button>`).join('')}</div>${cv}<div>${rView()}</div>`;
+}
+function rView(){
+  if(TAB==='enfoque')return rEnf();if(TAB==='captura')return rCap();
+  if(TAB==='tareas')return rTar();if(TAB==='tontas')return rTon();
+  if(TAB==='proyectos')return rProy();
+  if(TAB==='ajustes')return rAj();return'';
+}
+function rEnf(){
+  const nx=nextTask();const iW=S.pom.mode==='work';const pc=iW?'#534AB7':'#1D9E75';
+  const tot=S.tasks.length,dn=S.tasks.filter(t=>t.kanbanStatus==='done').length,ovd=S.tasks.filter(t=>isOD(t)).length;
+  const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
+  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.875rem;flex-wrap:wrap;gap:6px">
+  <div class="lvbadge"><i class="ti ti-shield-star" style="font-size:14px;color:#534AB7"></i>Nv.${S.g.level} — ${gNm(S.g.xp)}</div>
+  <div style="display:flex;gap:6px;align-items:center">
+    ${conn?`<div style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#2e7d32;background:#e8f5e9;padding:3px 8px;border-radius:99px"><i class="ti ti-brand-telegram" style="font-size:12px"></i>Telegram activo</div>`:`<div style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#888;background:#f0efe9;padding:3px 8px;border-radius:99px;cursor:pointer" onclick="setTab('ajustes')"><i class="ti ti-bell-off" style="font-size:12px"></i>Activar alertas</div>`}
+    <div class="skbadge"><i class="ti ti-flame" style="font-size:14px"></i>${S.g.streak} día${S.g.streak!==1?'s':''}</div>
+  </div></div>
+<div style="margin-bottom:1rem">
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:#666;margin-bottom:3px"><span>${S.g.xp} XP</span><span>Nv.${S.g.level+1}: ${LVLS[Math.min(S.g.level,9)]?.xp||'MAX'} XP</span></div>
+  <div class="xw"><div class="xf" style="width:${gPct(S.g.xp)}%"></div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
+  <div class="metric"><div class="ml">Completadas</div><div class="mv" style="color:#2e7d32">${dn}</div></div>
+  <div class="metric"><div class="ml">Pendientes</div><div class="mv" style="color:#8a5c00">${tot-dn}</div></div>
+  <div class="metric"><div class="ml">Vencidas</div><div class="mv" style="color:${ovd?'#c00':'#1a1a1a'}">${ovd}</div></div>
+</div>
+<div class="pcard">
+  <div style="font-size:10px;color:${pc};font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">${iW?'Sesión de trabajo':'Descanso'} — Sesión ${S.pom.sessions+1}</div>
+  <div id="ptd" class="ptm" style="color:${pc}">${fmtT(S.pom.seconds)}</div>
+  <div class="pw" style="height:4px;margin:10px 0"><div id="ptb" class="pf" style="width:${Math.round((1-S.pom.seconds/(iW?1500:300))*100)}%;background:${pc}"></div></div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+    ${!S.pom.running?`<button class="btn btnp blg" onclick="startPom()"><i class="ti ti-player-play"></i>Iniciar 25 min</button>`:`<button class="btn blg" onclick="pausePom()"><i class="ti ti-player-pause"></i>Pausar</button>`}
+    <button class="btn blg" onclick="resetPom()"><i class="ti ti-refresh"></i></button>
+  </div>
+  ${S.pom.sessions?`<div style="font-size:11px;color:#aaa;margin-top:8px">${S.pom.sessions} pomodoro${S.pom.sessions!==1?'s':''} hoy</div>`:''}
+</div>
+${nx?`<div class="fcard">
+  <div style="font-size:10px;font-weight:500;color:#185FA5;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Haz esto ahora</div>
+  <div style="font-size:16px;font-weight:500;margin-bottom:10px">${esc(nx.text)}</div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span class="badge ${nx.priority==='alta'?'ba':nx.priority==='media'?'bm':'bb'}">${nx.priority}</span>
+    ${nx.dueDate?`<span style="font-size:11px;color:${isOD(nx)?'#c00':'#666'}">${isOD(nx)?'Vencida — ':''}${fmtD(nx.dueDate)}</span>`:''}
+    <button class="btn btng" style="margin-left:auto" onclick="togTask('${nx.id}')"><i class="ti ti-check"></i>Completar</button>
+  </div></div>`:`<div class="empty"><i class="ti ti-mood-happy" style="font-size:28px;display:block;margin-bottom:8px"></i>${tot?'Todo al día — eres una leyenda.':'Usa Captura para agregar tu primera tarea'}</div>`}`;
+}
+function rCap(){
+  const rec=S.tasks.filter(t=>t.kanbanStatus!=='done').slice(-5).reverse();
+  return`<div style="margin-bottom:0.875rem">
+  <p style="font-size:22px;font-weight:500;margin-bottom:3px">¿Qué tienes en la cabeza?</p>
+  <p style="font-size:13px;color:#666">Escríbelo ya — sin pensar demasiado.</p>
+</div>
+<input type="text" id="cap-ti" class="capinp" placeholder="Ej: Llamar al banco, terminar informe..." onkeydown="if(event.key==='Enter')addTask('cap')" />
+<div style="margin-bottom:10px">
+  <div style="font-size:12px;color:#666;margin-bottom:6px">Prioridad:</div>
+  <div class="pribtns">
+    <button class="pribtn pralta${cPri==='alta'?' sel':''}" onclick="setPri('alta')"><i class="ti ti-flame"></i> Alta</button>
+    <button class="pribtn prmedia${cPri==='media'?' sel':''}" onclick="setPri('media')"><i class="ti ti-bolt"></i> Media</button>
+    <button class="pribtn prbaja${cPri==='baja'?' sel':''}" onclick="setPri('baja')"><i class="ti ti-leaf"></i> Baja</button>
+  </div>
+</div>
+<div class="arow" style="margin-bottom:14px">
+  <select onchange="setCP(this.value)" style="flex:1"><option value="">Sin proyecto</option>${S.projects.map(p=>`<option value="${p.id}"${cProj===p.id?' selected':''}>${esc(p.name)}</option>`).join('')}</select>
+  <input type="date" id="cap-td" />
+  <button class="btn btnp" style="padding:8px 16px;font-size:13px" onclick="addTask('cap')"><i class="ti ti-plus"></i>Guardar</button>
+</div>
+${rec.length?`<div class="hdiv"></div><p class="stl">Recién capturadas</p>${rec.map(t=>rItem(t,true)).join('')}`:''}`;
+}
+function rItem(t,mini=false){
+  const proj=S.projects.find(p=>p.id===t.projectId);
+  const bc=PRC[t.priority]||'#888';const iD=t.kanbanStatus==='done';const ov=isOD(t);
+  return`<div class="titem" style="border-left:3px solid ${bc}">
+    <input type="checkbox" class="tchk" ${iD?'checked':''} onchange="togTask('${t.id}')"/>
+    <span class="ttxt${iD?' done':''}">${esc(t.text)}</span>
+    ${!mini?`<span class="badge ${t.priority==='alta'?'ba':t.priority==='media'?'bm':'bb'}">${t.priority}</span>`:''}
+    ${ov?`<span class="bov">Vencida</span>`:t.dueDate&&!iD?`<span style="font-size:10px;color:#666;flex-shrink:0">${fmtD(t.dueDate)}</span>`:''}
+    ${proj&&!mini?`<span class="badge" style="background:${pCol(proj)}20;color:${pCol(proj)}">${esc(proj.name)}</span>`:''}
+    <button class="tdel" onclick="delTask('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
+  </div>`;
+}
+function rTar(){
+  let ts=[...S.tasks];
+  if(TF==='pend')ts=ts.filter(t=>t.kanbanStatus!=='done');
+  else if(TF==='done')ts=ts.filter(t=>t.kanbanStatus==='done');
+  else if(TF==='hoy')ts=ts.filter(t=>isTD(t)||isOD(t));
+  else if(TF==='alta')ts=ts.filter(t=>t.priority==='alta'&&t.kanbanStatus!=='done');
+  ts.sort((a,b)=>{if(isOD(a)&&!isOD(b))return-1;if(!isOD(a)&&isOD(b))return 1;return PRX[b.priority]-PRX[a.priority];});
+  return`<p class="stl">Todas las tareas</p>
+<div class="arow">
+  <input type="text" id="t-ti" placeholder="Nueva tarea..." onkeydown="if(event.key==='Enter')addTask('t')" />
+  <select id="t-tp"><option value="media">Media</option><option value="alta">Alta</option><option value="baja">Baja</option></select>
+  <select id="t-tpr"><option value="">Sin proyecto</option>${S.projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select>
+  <input type="date" id="t-td" />
+  <button class="btn btng" onclick="addTask('t')"><i class="ti ti-plus"></i></button>
+</div>
+<div class="frow">${[['all','Todas'],['pend','Pendientes'],['hoy','Hoy/Vencidas'],['alta','Alta'],['done','Hechas']].map(([v,l])=>`<button class="fbtn${TF===v?' fa':''}" onclick="setFilt('${v}')">${l}</button>`).join('')}</div>
+${ts.length?ts.map(t=>rItem(t)).join(''):`<div class="empty">Sin tareas aquí</div>`}`;
+}
+function rProy(){
+  const iK=VW==='kanban';
+  return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;flex-wrap:wrap;gap:6px">
+  <p class="stl" style="margin:0">Proyectos & Kanban</p>
+  <div style="display:flex;gap:5px">
+    <button class="btn${iK?' btnp':''}" onclick="togView()"><i class="ti ti-layout-columns"></i>Kanban</button>
+    <button class="btn${!iK?' btnp':''}" onclick="togView()"><i class="ti ti-folder"></i>Proyectos</button>
+    <button class="btn" onclick="togAP()"><i class="ti ti-plus"></i></button>
+  </div></div>
+${SAP?`<div class="apf"><div class="arow"><input type="text" id="pi" placeholder="Nombre del proyecto..."/><button class="btn btng" onclick="addProj()">Crear</button><button class="btn" onclick="togAP()">Cancelar</button></div></div>`:''}
+${iK?rKanban():rProjCards()}`;
+}
+function rKanban(){
+  const cols=[{id:'todo',label:'Por hacer',col:'#534AB7'},{id:'doing',label:'En progreso',col:'#BA7517'},{id:'done',label:'Completado',col:'#1D9E75'}];
+  return`<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">${cols.map(col=>{
+    const tasks=kTsk(col.id);
+    return`<div class="kcol"><div class="khead">
+      <span style="display:flex;align-items:center;gap:5px;color:${col.col}"><span style="width:6px;height:6px;border-radius:50%;background:${col.col};display:inline-block"></span>${col.label}</span>
+      <span style="font-size:10px;padding:1px 6px;border-radius:99px;background:#fff;color:#666;border:1px solid #ddd">${tasks.length}</span>
+    </div>
+    ${tasks.map(t=>{const proj=S.projects.find(p=>p.id===t.projectId);const ov=isOD(t);
+      return`<div class="kcard" style="border:${ov?'1px solid #f5a5a5':'1px solid #e0e0e0'};border-left:3px solid ${PRC[t.priority]}">
+        <div class="ktxt">${esc(t.text)}</div>
+        <div style="display:flex;gap:3px;margin-bottom:5px;flex-wrap:wrap;align-items:center">
+          <span class="badge ${t.priority==='alta'?'ba':t.priority==='media'?'bm':'bb'}">${t.priority}</span>
+          ${ov?`<span class="bov">Vencida</span>`:t.dueDate?`<span style="font-size:10px;color:#666">${fmtD(t.dueDate)}</span>`:''}
+          ${proj?`<span class="badge" style="background:${pCol(proj)}20;color:${pCol(proj)}">${esc(proj.name)}</span>`:''}
+        </div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center">
+          ${col.id!=='todo'?`<button class="kbtn" onclick="moveTask('${t.id}','${col.id==='doing'?'todo':'doing'}')">← ${col.id==='doing'?'Volver':'Prog.'}</button>`:''}
+          ${col.id!=='done'?`<button class="kbtn" onclick="moveTask('${t.id}','${col.id==='todo'?'doing':'done'}')" style="${col.id==='doing'?'color:#2e7d32':''}">${col.id==='todo'?'Iniciar →':'Completar'}</button>`:''}
+          <button class="tdel" onclick="delTask('${t.id}')" style="margin-left:auto"><i class="ti ti-x" style="font-size:10px"></i></button>
+        </div>
+      </div>`;
+    }).join('')}
+    ${!tasks.length?`<div style="font-size:11px;color:#aaa;text-align:center;padding:12px 0">Sin tareas</div>`:''}
+    </div>`;
+  }).join('')}</div>`;
+}
+function rProjCards(){
+  return S.projects.length?S.projects.map(p=>{
+    const pct=pPct(p.id),ts=pTsk(p.id),dc=ts.filter(t=>t.kanbanStatus==='done').length,col=pCol(p);
+    return`<div class="pjcard">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+        <span style="font-size:14px;font-weight:500;display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${esc(p.name)}</span>
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-size:11px;color:#666">${dc}/${ts.length}</span>
+          <span style="font-size:12px;font-weight:500;color:${col}">${pct}%</span>
+          ${!['trabajo','personal'].includes(p.id)?`<button class="tdel" onclick="delProj('${p.id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:''}
+        </div>
+      </div>
+      <div class="pw" style="margin-bottom:8px"><div class="pf" style="width:${pct}%;background:${col}"></div></div>
+      ${ts.length?ts.slice(0,3).map(t=>rItem(t,true)).join(''):`<div style="font-size:12px;color:#aaa;padding:6px 0">Sin tareas aún</div>`}
+      ${ts.length>3?`<div style="font-size:11px;color:#666;text-align:right;margin-top:4px">+${ts.length-3} más</div>`:''}
+    </div>`;
+  }).join(''):`<div class="empty">Sin proyectos adicionales</div>`;
+}
+function addTonta(){
+  const inp=document.getElementById('ton-ti');const txt=inp?.value?.trim();if(!txt)return;
+  S.tontas.push({id:gid(),text:txt,done:false,createdAt:new Date().toISOString()});
+  saveS();render();setTimeout(()=>document.getElementById('ton-ti')?.focus(),50);
+}
+function togTonta(id){
+  const t=S.tontas.find(x=>x.id===id);if(!t)return;
+  t.done=!t.done;saveS();render();
+}
+function delTonta(id){S.tontas=S.tontas.filter(t=>t.id!==id);saveS();render();}
+function clearDoneTontas(){S.tontas=S.tontas.filter(t=>!t.done);saveS();render();}
+function rTon(){
+  const pend=S.tontas.filter(t=>!t.done);
+  const done=S.tontas.filter(t=>t.done);
+  const ideas=['Ordenar ese cajón','Ver ese video que tienes guardado','Mandar ese meme','Tomar agua 💧','Estirarte 5 min'];
+  const idea=ideas[Math.floor(Math.random()*ideas.length)];
+  return`<div style="margin-bottom:1rem">
+  <p style="font-size:22px;font-weight:500;margin-bottom:4px">🎉 Tareas Tontas</p>
+  <p style="font-size:13px;color:#666">Sin urgencia, sin presión — para cuando tengas un ratito libre.</p>
+</div>
+<div style="display:flex;gap:6px;margin-bottom:1rem">
+  <input type="text" id="ton-ti" placeholder="${idea}..." style="flex:1" onkeydown="if(event.key==='Enter')addTonta()" />
+  <button class="btn" style="background:#f9eaff;border-color:#d9a5f5;color:#7b2fa0" onclick="addTonta()"><i class="ti ti-plus"></i>Agregar</button>
+</div>
+${pend.length===0&&done.length===0?`<div class="empty" style="padding:2rem 0">
+  <div style="font-size:36px;margin-bottom:8px">🧸</div>
+  <div style="font-weight:500;margin-bottom:4px">Aquí van las cosas sin urgencia</div>
+  <div style="font-size:12px">Ej: ver una serie, organizar fotos, aprender algo random...</div>
+</div>`:''}
+${pend.length?`<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:1rem">${pend.map(t=>`
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f9eaff;border:1px solid #e8c8fc">
+    <input type="checkbox" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#9b3fc8" onchange="togTonta('${t.id}')"/>
+    <span style="flex:1;font-size:13px;color:#1a1a1a">${esc(t.text)}</span>
+    <button class="tdel" onclick="delTonta('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
+  </div>`).join('')}</div>`:''}
+${done.length?`<div class="hdiv"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+  <span style="font-size:12px;color:#aaa">Completadas (${done.length})</span>
+  <button class="btn" style="font-size:11px;padding:3px 8px;color:#aaa" onclick="clearDoneTontas()"><i class="ti ti-trash" style="font-size:11px"></i>Limpiar</button>
+</div>
+${done.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:#f5f5f0;border:1px solid #e0e0e0;margin-bottom:4px;opacity:0.6">
+  <input type="checkbox" checked style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#9b3fc8" onchange="togTonta('${t.id}')"/>
+  <span style="flex:1;font-size:13px;color:#aaa;text-decoration:line-through">${esc(t.text)}</span>
+  <button class="tdel" onclick="delTonta('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
+</div>`).join('')}`:''}`;
+}
+function rAj(){
+  const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
+  return`<p class="stl">Configuración</p>
+<div class="csec">
+  <div class="cttl"><i class="ti ti-brand-telegram" style="font-size:18px;color:#229ED9"></i>Recordatorios por Telegram</div>
+  ${conn?`<div style="display:flex;align-items:center;gap:6px;background:#e8f5e9;border-radius:8px;padding:8px 12px;font-size:12px;color:#2e7d32;margin-bottom:12px"><i class="ti ti-circle-check" style="font-size:15px"></i>Telegram conectado y activo</div>`:''}
+  <div style="background:#f5f5f0;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.8">
+    <span style="font-weight:500;color:#1a1a1a">Setup rápido:</span><br>
+    1. Busca <b>@BotFather</b> en Telegram → escríbele <b>/newbot</b><br>
+    2. Copia el token que te da<br>
+    3. Manda cualquier mensaje a tu bot nuevo<br>
+    4. Pega el token abajo y presiona "Obtener Chat ID"
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+    <input type="text" id="tg-tok" value="${esc(S.cfg.token)}" placeholder="Token del bot (123456789:AABBcc...)" style="flex:1;min-width:180px" />
+    <button class="btn btntg" onclick="fetchChatId()"><i class="ti ti-search"></i>Obtener Chat ID</button>
+  </div>
+  <div style="margin-bottom:10px">
+    <input type="text" id="tg-cid" value="${esc(S.cfg.chatId)}" placeholder="Chat ID — escríbelo o usa el botón de arriba" style="width:100%" />
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+    <label style="font-size:12px;color:#666">Revisión diaria a las:</label>
+    <input type="time" id="cfg-time" value="${S.cfg.dailyTime||'09:00'}" style="max-width:130px" />
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+    <input type="checkbox" id="cfg-ena" ${S.cfg.enabled?'checked':''} style="width:16px;height:16px;accent-color:#229ED9" />
+    <label for="cfg-ena" style="font-size:13px;cursor:pointer">Activar recordatorios</label>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <button class="btn btng" onclick="saveConfig()"><i class="ti ti-device-floppy"></i>Guardar</button>
+    <button class="btn btntg" onclick="testTG()"><i class="ti ti-send"></i>Enviar prueba</button>
+    <span id="tg-msg" style="font-size:12px"></span>
+  </div>
+</div>
+<div class="csec">
+  <div class="cttl"><i class="ti ti-bell" style="font-size:16px;color:#8a5c00"></i>Te llegará mensaje cuando...</div>
+  <div style="font-size:12px;color:#666;line-height:1.9">— Completes una tarea (con XP)<br>— Subas de nivel<br>— Una tarea esté vencida<br>— Termine un pomodoro<br>— Sea hora de tu revisión diaria</div>
+</div>
+<div class="csec">
+  <div class="cttl"><i class="ti ti-trophy" style="font-size:16px;color:#BA7517"></i>Tu progreso</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="metric"><div class="ml">XP Total</div><div class="mv" style="color:#534AB7">${S.g.xp}</div></div>
+    <div class="metric"><div class="ml">Nivel</div><div class="mv">${S.g.level} — ${gNm(S.g.xp)}</div></div>
+    <div class="metric"><div class="ml">Racha</div><div class="mv" style="color:#BA7517">${S.g.streak} días</div></div>
+    <div class="metric"><div class="ml">Pomodoros</div><div class="mv">${S.pom.sessions}</div></div>
+  </div>
+</div>`;
+}
+loadS();render();checkRem();setInterval(checkRem,60000);
+</script>
+</body>
+</html>
