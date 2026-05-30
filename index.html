@@ -249,14 +249,13 @@ async function testTG(){
 }
 function render(){
   const app=document.getElementById('app');
-  const tabs=[['enfoque','ti-target','Enfoque'],['captura','ti-bolt','Captura'],['tareas','ti-checks','Tareas'],['tontas','ti-confetti','Tontas'],['proyectos','ti-folders','Proyectos'],['ajustes','ti-settings','Ajustes']];
+  const tabs=[['enfoque','ti-target','Enfoque'],['captura','ti-bolt','Captura'],['tareas','ti-checks','Tareas'],['proyectos','ti-folders','Proyectos'],['ajustes','ti-settings','Ajustes']];
   const cv=celMsg?`<div class="cel"><i class="ti ti-star"></i> ${esc(celMsg)}</div>`:'';celMsg='';
   app.innerHTML=`<div class="tabs">${tabs.map(([t,ic,lb])=>`<button class="tab${TAB===t?' active':''}" onclick="setTab('${t}')"><i class="ti ${ic}"></i>${lb}</button>`).join('')}</div>${cv}<div>${rView()}</div>`;
 }
 function rView(){
   if(TAB==='enfoque')return rEnf();if(TAB==='captura')return rCap();
-  if(TAB==='tareas')return rTar();if(TAB==='tontas')return rTon();
-  if(TAB==='proyectos')return rProy();
+  if(TAB==='tareas')return rTar();if(TAB==='proyectos')return rProy();
   if(TAB==='ajustes')return rAj();return'';
 }
 function rEnf(){
@@ -405,52 +404,6 @@ function rProjCards(){
       ${ts.length>3?`<div style="font-size:11px;color:#666;text-align:right;margin-top:4px">+${ts.length-3} más</div>`:''}
     </div>`;
   }).join(''):`<div class="empty">Sin proyectos adicionales</div>`;
-}
-function addTonta(){
-  const inp=document.getElementById('ton-ti');const txt=inp?.value?.trim();if(!txt)return;
-  S.tontas.push({id:gid(),text:txt,done:false,createdAt:new Date().toISOString()});
-  saveS();render();setTimeout(()=>document.getElementById('ton-ti')?.focus(),50);
-}
-function togTonta(id){
-  const t=S.tontas.find(x=>x.id===id);if(!t)return;
-  t.done=!t.done;saveS();render();
-}
-function delTonta(id){S.tontas=S.tontas.filter(t=>t.id!==id);saveS();render();}
-function clearDoneTontas(){S.tontas=S.tontas.filter(t=>!t.done);saveS();render();}
-function rTon(){
-  const pend=S.tontas.filter(t=>!t.done);
-  const done=S.tontas.filter(t=>t.done);
-  const ideas=['Ordenar ese cajón','Ver ese video que tienes guardado','Mandar ese meme','Tomar agua 💧','Estirarte 5 min'];
-  const idea=ideas[Math.floor(Math.random()*ideas.length)];
-  return`<div style="margin-bottom:1rem">
-  <p style="font-size:22px;font-weight:500;margin-bottom:4px">🎉 Tareas Tontas</p>
-  <p style="font-size:13px;color:#666">Sin urgencia, sin presión — para cuando tengas un ratito libre.</p>
-</div>
-<div style="display:flex;gap:6px;margin-bottom:1rem">
-  <input type="text" id="ton-ti" placeholder="${idea}..." style="flex:1" onkeydown="if(event.key==='Enter')addTonta()" />
-  <button class="btn" style="background:#f9eaff;border-color:#d9a5f5;color:#7b2fa0" onclick="addTonta()"><i class="ti ti-plus"></i>Agregar</button>
-</div>
-${pend.length===0&&done.length===0?`<div class="empty" style="padding:2rem 0">
-  <div style="font-size:36px;margin-bottom:8px">🧸</div>
-  <div style="font-weight:500;margin-bottom:4px">Aquí van las cosas sin urgencia</div>
-  <div style="font-size:12px">Ej: ver una serie, organizar fotos, aprender algo random...</div>
-</div>`:''}
-${pend.length?`<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:1rem">${pend.map(t=>`
-  <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f9eaff;border:1px solid #e8c8fc">
-    <input type="checkbox" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#9b3fc8" onchange="togTonta('${t.id}')"/>
-    <span style="flex:1;font-size:13px;color:#1a1a1a">${esc(t.text)}</span>
-    <button class="tdel" onclick="delTonta('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
-  </div>`).join('')}</div>`:''}
-${done.length?`<div class="hdiv"></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-  <span style="font-size:12px;color:#aaa">Completadas (${done.length})</span>
-  <button class="btn" style="font-size:11px;padding:3px 8px;color:#aaa" onclick="clearDoneTontas()"><i class="ti ti-trash" style="font-size:11px"></i>Limpiar</button>
-</div>
-${done.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:#f5f5f0;border:1px solid #e0e0e0;margin-bottom:4px;opacity:0.6">
-  <input type="checkbox" checked style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#9b3fc8" onchange="togTonta('${t.id}')"/>
-  <span style="flex:1;font-size:13px;color:#aaa;text-decoration:line-through">${esc(t.text)}</span>
-  <button class="tdel" onclick="delTonta('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
-</div>`).join('')}`:''}`;
 }
 function rAj(){
   const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
