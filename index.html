@@ -3,457 +3,805 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Sistema ADHD</title>
+<title>Mi Sistema</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;padding:16px}
-  .app{max-width:780px;margin:0 auto}
-  .tabs{display:flex;gap:2px;margin-bottom:1.25rem;background:#e8e7e2;padding:3px;border-radius:10px}
-  .tab{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:7px;font-size:11px;cursor:pointer;color:#666;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit}
-  .tab i{font-size:17px}
-  .tab.active{background:#fff;color:#1a1a1a;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
-  .metric{background:#f0efe9;border-radius:8px;padding:10px 12px;text-align:center}
-  .ml{font-size:10px;color:#666;margin-bottom:3px}
-  .mv{font-size:20px;font-weight:500}
-  .pw{height:5px;border-radius:99px;background:#ddd;overflow:hidden}
-  .pf{height:100%;border-radius:99px;transition:width 0.5s}
-  .xw{height:8px;border-radius:99px;background:#ddd;overflow:hidden;margin:4px 0}
-  .xf{height:100%;border-radius:99px;background:#534AB7;transition:width 0.5s}
-  .pcard{background:#f0efe9;border-radius:12px;padding:18px;text-align:center;margin-bottom:1rem}
-  .ptm{font-size:52px;font-weight:500;letter-spacing:3px;line-height:1}
-  .fcard{border:2px solid #b5d4f4;border-radius:12px;padding:14px;margin-bottom:1rem;background:#fff}
-  .titem{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:0.5px solid #e0e0e0;background:#fff;margin-bottom:5px}
-  .tchk{width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#1D9E75}
-  .ttxt{flex:1;font-size:13px;color:#1a1a1a;min-width:0;word-break:break-word}
-  .done{text-decoration:line-through;color:#aaa!important}
-  .tdel{background:none;border:none;cursor:pointer;color:#aaa;padding:2px 4px;border-radius:4px;line-height:1;display:flex;align-items:center;flex-shrink:0}
-  .tdel:hover{background:#fee;color:#c00}
-  .badge{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500;white-space:nowrap;flex-shrink:0}
-  .ba{background:#fee;color:#c00}
-  .bm{background:#fef3e2;color:#8a5c00}
-  .bb{background:#e8f5e9;color:#2e7d32}
-  .bov{background:#fee;color:#c00;font-size:10px;padding:1px 6px;border-radius:99px;font-weight:500;flex-shrink:0}
-  .arow{display:flex;gap:5px;margin-bottom:0.75rem;flex-wrap:wrap}
-  .arow input,.arow select{font-size:13px;padding:7px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit}
-  .arow input{flex:1;min-width:120px}
-  .btn{padding:7px 12px;font-size:12px;border-radius:8px;background:#fff;border:1px solid #ccc;cursor:pointer;font-weight:500;color:#1a1a1a;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;font-family:inherit}
-  .btn:hover{background:#f5f5f5}
-  .btn:active{transform:scale(0.98)}
-  .btng{background:#1D9E75;color:#fff;border-color:#1D9E75}
-  .btng:hover{background:#0F6E56;color:#fff}
-  .btnp{background:#534AB7;color:#fff;border-color:#534AB7}
-  .btnp:hover{background:#3C3489;color:#fff}
-  .btntg{background:#229ED9;color:#fff;border-color:#229ED9}
-  .btntg:hover{background:#1a85b8;color:#fff}
-  .blg{padding:10px 18px;font-size:13px;justify-content:center}
-  .kcol{border-radius:12px;padding:9px;background:#f0efe9}
-  .khead{font-size:11px;font-weight:500;margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
-  .kcard{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:8px 9px;margin-bottom:5px}
-  .ktxt{font-size:12px;margin-bottom:6px;color:#1a1a1a;line-height:1.4}
-  .kbtn{font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid #ddd;background:transparent;cursor:pointer;color:#666;font-family:inherit}
-  .kbtn:hover{background:#f0f0f0;color:#1a1a1a}
-  .pjcard{border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:9px;background:#fff}
-  .stl{font-size:14px;font-weight:500;margin-bottom:0.75rem}
-  .empty{text-align:center;color:#aaa;font-size:13px;padding:1.25rem 0}
-  .frow{display:flex;gap:5px;margin-bottom:0.75rem;flex-wrap:wrap}
-  .fbtn{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid #ddd;background:transparent;cursor:pointer;color:#666;font-family:inherit}
-  .fbtn.fa{background:#1a1a1a;color:#fff;font-weight:500}
-  .hdiv{border:none;border-top:1px solid #e8e8e8;margin:0.875rem 0}
-  .apf{background:#f0efe9;border-radius:8px;padding:9px;margin-bottom:0.875rem;border:1px solid #e0e0e0}
-  @keyframes fadeS{0%{opacity:0;transform:translateY(-6px)}15%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0}}
-  .cel{text-align:center;padding:9px;background:#e8f5e9;color:#2e7d32;border-radius:8px;margin-bottom:0.75rem;font-size:13px;font-weight:500;animation:fadeS 2.8s ease-in-out forwards}
-  .csec{border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin-bottom:1rem;background:#fff}
-  .cttl{font-size:13px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:7px}
-  .capinp{width:100%;font-size:20px;padding:14px;border-radius:12px;border:2px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit;margin-bottom:12px}
-  .capinp:focus{border-color:#534AB7;outline:none}
-  .pribtns{display:flex;gap:8px;margin-bottom:12px}
-  .pribtn{flex:1;padding:9px;border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit}
-  .pralta{background:#fee;color:#c00}.pralta.sel{border-color:#E24B4A}
-  .prmedia{background:#fef3e2;color:#8a5c00}.prmedia.sel{border-color:#EF9F27}
-  .prbaja{background:#e8f5e9;color:#2e7d32}.prbaja.sel{border-color:#639922}
-  .lvbadge{display:inline-flex;align-items:center;gap:5px;background:#f0efe9;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:500}
-  .skbadge{display:inline-flex;align-items:center;gap:5px;background:#fef3e2;color:#8a5c00;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:500}
-  input[type=text],input[type=tel],input[type=time],input[type=date],select{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#1a1a1a;font-family:inherit;font-size:13px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f0ec;color:#1a1a1a;padding:12px;min-height:100vh}
+.app{max-width:820px;margin:0 auto}
+.tabs{display:flex;gap:2px;margin-bottom:1.25rem;background:#e2e1dc;padding:3px;border-radius:12px}
+.tab{flex:1;padding:9px 4px;border:none;background:transparent;border-radius:9px;font-size:10px;cursor:pointer;color:#888;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;transition:all 0.15s}
+.tab i{font-size:17px}
+.tab.active{background:#fff;color:#1a1a1a;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.btn{padding:7px 13px;font-size:12px;border-radius:9px;background:#fff;border:1.5px solid #d0d0cc;cursor:pointer;font-weight:600;color:#1a1a1a;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;font-family:inherit;transition:all 0.1s}
+.btn:hover{background:#f5f5f2;border-color:#aaa}
+.btn:active{transform:scale(0.96)}
+.btng{background:#1D9E75;color:#fff;border-color:#1D9E75}.btng:hover{background:#157a5a;border-color:#157a5a}
+.btnp{background:#534AB7;color:#fff;border-color:#534AB7}.btnp:hover{background:#3d3890;border-color:#3d3890}
+.btntg{background:#229ED9;color:#fff;border-color:#229ED9}.btntg:hover{background:#1a7fad;border-color:#1a7fad}
+.btnw{background:#f59e0b;color:#fff;border-color:#f59e0b}.btnw:hover{background:#d4870a;border-color:#d4870a}
+.btnr{background:#E24B4A;color:#fff;border-color:#E24B4A}.btnr:hover{background:#b83332;border-color:#b83332}
+.inp{width:100%;padding:10px 13px;border-radius:9px;border:1.5px solid #d0d0cc;background:#fff;color:#1a1a1a;font-family:inherit;font-size:13px;transition:border 0.15s}
+.inp:focus{border-color:#534AB7;outline:none;box-shadow:0 0 0 3px #534AB720}
+.inp.err{border-color:#E24B4A;box-shadow:0 0 0 3px #E24B4A20}
+.sel{padding:10px 11px;border-radius:9px;border:1.5px solid #d0d0cc;background:#fff;color:#1a1a1a;font-family:inherit;font-size:12px;cursor:pointer}
+.sel:focus{border-color:#534AB7;outline:none}
+.card{background:#fff;border:1.5px solid #e0e0da;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.pw{height:8px;border-radius:99px;background:#e8e8e2;overflow:hidden}
+.pf{height:100%;border-radius:99px;transition:width 0.6s cubic-bezier(.34,1.56,.64,1)}
+.xw{height:9px;border-radius:99px;background:#e0dff5;overflow:hidden;margin:4px 0}
+.xf{height:100%;border-radius:99px;background:linear-gradient(90deg,#534AB7,#7c6fd4);transition:width 0.6s ease}
+.badge{font-size:10px;padding:3px 8px;border-radius:99px;font-weight:700;white-space:nowrap;flex-shrink:0}
+/* TASK GRID CARDS */
+.task-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:4px}
+@media(max-width:500px){.task-grid{grid-template-columns:1fr}}
+.trow{display:flex;flex-direction:column;padding:16px;border-radius:16px;background:#fff;border:2px solid #e0e0da;border-top:6px solid #534AB7;transition:all 0.18s;box-shadow:0 4px 16px rgba(0,0,0,0.07);aspect-ratio:1/1}
+.trow:hover{box-shadow:0 8px 28px rgba(0,0,0,0.13);transform:translateY(-3px)}
+.trow.t-wait{border-top-color:#229ED9;background:linear-gradient(160deg,#fff 70%,#edf5fd)}
+.trow.t-done{border-top-color:#1D9E75;background:linear-gradient(160deg,#fff 70%,#edfaf5);opacity:0.65}
+.trow.t-venc{border-top-color:#E24B4A;background:linear-gradient(160deg,#fff 70%,#fff5f5)}
+.trow-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ttxt{font-size:15px;color:#1a1a1a;word-break:break-word;line-height:1.45;font-weight:700;flex:1}
+.tdone-txt{text-decoration:line-through;color:#bbb!important;font-weight:500!important}
+.tmeta{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tactions{display:flex;gap:2px;align-items:center;flex-shrink:0}
+.ico-btn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;display:flex;align-items:center;color:#ccc;transition:all 0.1s}
+.ico-btn:hover.edit{color:#534AB7;background:#f0effe}
+.ico-btn:hover.del{color:#E24B4A;background:#fff0f0}
+.sb{font-size:11px;padding:3px 9px;border-radius:99px;border:1.5px solid #e0e0da;background:#f5f5f2;color:#888;cursor:pointer;font-family:inherit;transition:all 0.1s;font-weight:500}
+.sb:hover{border-color:#aaa;color:#444;background:#ebebeb}
+.sb-todo{border-color:#534AB7;background:#f0effe;color:#534AB7;font-weight:700}
+.sb-wait{border-color:#229ED9;background:#edf5fd;color:#229ED9;font-weight:700}
+.sb-done{border-color:#1D9E75;background:#edfaf5;color:#1D9E75;font-weight:700}
+/* PROYECTOS */
+.cat-hdr{display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:12px;cursor:pointer;margin-bottom:8px;border:1.5px solid transparent;transition:all 0.15s}
+.cat-hdr:hover{opacity:0.9}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding-left:0;align-items:start}
+@media(max-width:500px){.proj-grid{grid-template-columns:1fr}}
+.proj-card{background:#fff;border:2px solid #e0e0da;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.07);display:flex;flex-direction:column;transition:all 0.18s}
+.proj-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.12)}
+.proj-hdr{padding:11px 14px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:background 0.1s}
+.proj-hdr:hover{background:#fafaf8}
+.proj-body{padding:8px 14px 13px;border-top:1.5px solid #f0f0ec}
+.sub-row{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;margin-bottom:3px;transition:background 0.1s}
+.sub-row:hover{background:#f5f5f2}
+/* POMODORO */
+.pom-ring{width:200px;height:200px;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.pom-time{font-size:50px;font-weight:200;letter-spacing:3px;line-height:1}
+.pom-svg{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotate(-90deg)}
+.brain-area{width:100%;min-height:150px;padding:13px;border-radius:10px;border:1.5px solid #d0d0cc;background:#fffdf5;color:#1a1a1a;font-family:inherit;font-size:13px;line-height:1.7;resize:vertical}
+.brain-area:focus{border-color:#534AB7;outline:none}
+/* MODAL */
+.modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(2px)}
+.modal{background:#fff;border-radius:16px;padding:20px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}
+.stat{background:#fff;border:1.5px solid #e0e0da;border-radius:11px;padding:10px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.stat-v{font-size:22px;font-weight:800}
+.stat-l{font-size:10px;color:#888;margin-top:2px;font-weight:500}
+.csec{border:1.5px solid #e0e0da;border-radius:14px;padding:14px;margin-bottom:12px;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,0.04)}
+.lvbadge{display:inline-flex;align-items:center;gap:5px;background:#f0effe;border:1.5px solid #7c6fd4;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;color:#534AB7}
+.skbadge{display:inline-flex;align-items:center;gap:5px;background:#fff8eb;border:1.5px solid #f59e0b;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;color:#d4870a}
+.empty{text-align:center;color:#ccc;font-size:13px;padding:28px 0}
+.fb{font-size:11px;padding:5px 12px;border-radius:99px;border:1.5px solid #d0d0cc;background:#fff;color:#888;cursor:pointer;font-family:inherit;transition:all 0.1s;font-weight:500}
+.fb:hover{border-color:#888;color:#444}
+.fb.act{background:#534AB7;color:#fff;border-color:#534AB7;font-weight:700}
+input[type=date],input[type=time]{padding:9px 11px;border-radius:9px;border:1.5px solid #d0d0cc;background:#fff;color:#1a1a1a;font-family:inherit;font-size:12px}
+input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:#1D9E75}
+@keyframes pop{0%{opacity:0;transform:scale(0.8)}60%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes fadeOut{0%{opacity:1}70%{opacity:1}100%{opacity:0;margin:0;padding:0;height:0}}
+.cel{padding:12px 16px;background:linear-gradient(135deg,#f0effe,#edfaf5);border:1.5px solid #7c6fd4;border-radius:12px;margin-bottom:12px;font-size:13px;font-weight:700;color:#534AB7;animation:pop 0.3s ease,fadeOut 4s ease 1.5s forwards;display:flex;align-items:center;gap:10px}
+.errmsg{font-size:11px;color:#E24B4A;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:4px;animation:pop 0.2s ease}
+.dv{border:none;border-top:1.5px solid #f0f0ec;margin:10px 0}
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
 </style>
 </head>
 <body>
-<div class="app">
-  <div id="app"><div style="text-align:center;padding:2.5rem;color:#888;font-size:13px">Cargando...</div></div>
-</div>
+<canvas id="confetti-canvas"></canvas>
+<div class="app"><div id="root"></div></div>
+<div id="modal-root"></div>
+ 
 <script>
-const DPROJ=[{id:'trabajo',name:'Trabajo',color:'#378ADD'},{id:'personal',name:'Personal',color:'#1D9E75'}];
-const LVLS=[{xp:0,n:'Arranque'},{xp:50,n:'Enfoque'},{xp:150,n:'Constancia'},{xp:300,n:'Ritmo'},{xp:500,n:'Flujo'},{xp:750,n:'Momentum'},{xp:1050,n:'Maestría'},{xp:1400,n:'Potencia'},{xp:1800,n:'Élite'},{xp:2300,n:'Leyenda'}];
-const PCOLS=['#378ADD','#1D9E75','#534AB7','#D85A30','#D4537E','#BA7517'];
-const PRC={alta:'#E24B4A',media:'#EF9F27',baja:'#639922'};
-const PRX={alta:25,media:15,baja:10};
-let S={tasks:[],tontas:[],projects:[...DPROJ],g:{xp:0,level:1,streak:0,lastDate:''},pom:{seconds:1500,running:false,sessions:0,mode:'work'},cfg:{token:'',chatId:'',dailyTime:'09:00',enabled:false,lastDaily:''}};
-let TAB='ajustes',TF='all',VW='kanban',SAP=false,cPri='media',cProj='',celMsg='';
+// ── CONFETTI ─────────────────────────────────────────────────
+function launchConfetti(){
+  const cv=document.getElementById('confetti-canvas');
+  const ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const cols=['#534AB7','#1D9E75','#f59e0b','#E24B4A','#229ED9','#7c6fd4','#4dc99a','#f472b6'];
+  const pieces=Array.from({length:130},()=>({
+    x:Math.random()*cv.width,y:-10,
+    w:Math.random()*10+5,h:Math.random()*6+4,
+    color:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360,
+    vx:(Math.random()-0.5)*5,vy:Math.random()*5+2,vr:(Math.random()-0.5)*9
+  }));
+  let f=0;
+  (function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    pieces.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,1-f/100);ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=0.08;});
+    if(++f<130)requestAnimationFrame(draw);else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+ 
+// ── CONSTANTES ───────────────────────────────────────────────
+const PCOLS=['#534AB7','#1D9E75','#E24B4A','#229ED9','#f59e0b','#D4537E','#0E7C7B','#8B5E3C'];
+const LVLS=[{x:0,n:'Arrancando 🐣'},{x:50,n:'Despertando 👀'},{x:150,n:'Enfocado 🎯'},{x:300,n:'En ritmo 🔥'},{x:500,n:'Imparable 💪'},{x:750,n:'Máquina ⚡'},{x:1050,n:'Maestro 🧠'},{x:1400,n:'Leyenda 🏆'},{x:1800,n:'Élite 👑'},{x:2300,n:'DIOS MODE 🌟'}];
+const CATS={business:{label:'Business',color:'#229ED9',bg:'#edf5fd',icon:'ti-briefcase'},personal:{label:'Personal',color:'#1D9E75',bg:'#edfaf5',icon:'ti-home'}};
+const SK='adhd_v7';
+const FUNNY=[
+  '¡Lo hiciste! Y el mundo sigue girando 🌍','BOOM. Tachado. Así se hace 💥',
+  '¿Ves? Tu cerebro SÍ funciona 🧠✨','Otro más al cementerio de pendientes 💀',
+  'Eso que sientes se llama productividad 😎','¡Toma dopamina gratis! Te la ganaste 🎁',
+  'Tu yo del futuro te lo agradece 🙏','¡GOLAZO! ¿Quién dijo ADHD? 🥅⚽',
+  'Pequeño paso, gigante avance 🚀','Así se construyen imperios. Una tarea a la vez 👑'
+];
+const TG_COMP=[
+  '✅ Hecho: "{t}"\n\n💪 Cada cosa que tachas es una promesa que te cumples a ti mismo.\n\n🔥 Racha: {s} días | ⚡ {xp} XP acumulados',
+  '🎯 "{t}" — COMPLETADA.\n\nNo es suerte. Es que eres capaz. Siempre lo fuiste.\n\n🔥 {s} días de racha | Nv.{lv}',
+  '💥 "{t}" — tachada.\n\nEstás construyendo la mejor versión de ti. Un paso a la vez.\n\n⚡ {xp} XP | 🔥 {s} días seguidos',
+  '✅ "{t}"\n\nCada tarea completada es evidencia de que puedes con esto.\n\n🏆 {xp} XP | Racha: {s} días'
+];
+const TG_DAILY=[
+  '☀️ Nuevo día. {todo} razones para arrancar.\n\n📋 Por hacer: {todo} | ⏳ Esperando: {wait}{ovd}\n\n🔥 Racha: {s} días — no la rompas hoy.\n⚡ {lvn}',
+  '🌅 Buenos días.\n\n📋 {todo} por hacer | ⏳ {wait} esperando{ovd}\n\nNo tienes que hacerlo todo perfecto. Solo tienes que hacerlo.\n\n🔥 {s} días seguidos. Eso ya es parte de ti.',
+  '☀️ Revisión diaria.\n\n{todo} tareas pendientes · {wait} esperando respuesta{ovd}\n\n¿Cuál es la que más te pesa? Esa empieza primero.\n🔥 Racha: {s} días'
+];
+const TG_OVD=[
+  '⚠️ Llevas {d} día{ds} sin resolver:\n"{t}"\n\nNo te juzgo. Solo te recuerdo que puedes hoy.',
+  '🔔 "{t}" lleva {d} día{ds} esperando.\n\nCada día se siente más pesada. Hoy es buen día para quitártela.',
+  '⏰ {d} día{ds} y esta sigue aquí:\n"{t}"\n\n¿10 minutos hoy? Solo 10.'
+];
+const TG_PUSH=[
+  '🚀 Recuerda que cada tarea que completas es un ladrillo más en tu negocio.\n\nAhora mismo tienes esto pendiente:\n{tareas}\n\n¿Cuál puedes atacar en los próximos 20 minutos?',
+  '💡 Los negocios que crecen no tienen dueños que esperan el momento perfecto — tienen dueños que actúan ahora.\n\nNo olvides estas tareas:\n{tareas}\n\n🔥 Racha: {s} días',
+  '⚡ Check rápido cada 20 min:\n\n{tareas}\n\nCada una de esas es dinero, tiempo y crecimiento esperando a que las ejecutes.',
+  '🎯 Los grandes negocios se construyen con acciones pequeñas y consistentes.\n\nEstas son las tuyas ahora:\n{tareas}\n\n¿Qué resuelves primero?',
+  '💰 Tu negocio no crece solo. Crece cada vez que tú actúas.\n\nTareas al frente:\n{tareas}\n\n🔥 {s} días de racha. No pares ahora.',
+  '🧠 Recordatorio de tu cerebro externo:\n\n{tareas}\n\nUna de estas puede cambiar el rumbo de tu semana. Elige una y comienza.',
+  '📈 Los emprendedores que ganan no son los más inteligentes — son los más consistentes.\n\nTienes esto pendiente:\n{tareas}\n\n⚡ Nv.{lv}: {lvn}',
+  '🔑 Cada tarea completada acerca tu negocio a donde quieres llevarlo.\n\nEn tu lista ahora:\n{tareas}\n\n💪 Tú construiste esto. Tú lo vas a crecer.',
+  '⏰ Han pasado 20 minutos. ¿Qué avanzaste?\n\nSi la respuesta es "nada", aquí hay opciones:\n{tareas}\n\n🔥 No juzgo. Solo te recuerdo que puedes.',
+  '🌟 Tu negocio es el reflejo de tus acciones diarias.\n\nEstas tareas te están esperando:\n{tareas}\n\n¿Cuál de todas te genera más impacto si la haces HOY?'
+];
+ 
+ 
+// ── ESTADO ───────────────────────────────────────────────────
+let S={
+  tasks:[],subtasks:[],
+  projects:[
+    {id:'p-work',name:'Trabajo',color:'#229ED9',category:'business'},
+    {id:'p-personal',name:'Personal',color:'#1D9E75',category:'personal'}
+  ],
+  notas:'',
+  g:{xp:0,level:1,streak:0,lastDate:''},
+  pom:{secs:1500,running:false,sessions:0,mode:'work'},
+  cfg:{token:'',chatId:'',dailyTime:'09:00',enabled:false,lastDaily:''}
+};
+let tab='main',filt='activas',celMsg='';
+let openProjs={},openCats={business:true,personal:true};
 let pomInt=null;
-const SK='adhd_ls_v1';
-function gid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function loadS(){
-  try{const d=localStorage.getItem(SK);if(d)S=JSON.parse(d);}catch(e){}
-  if(!S.projects||!S.projects.length)S.projects=[...DPROJ];
+let editTask=null,editProj=null;
+ 
+// ── UTILS ────────────────────────────────────────────────────
+const gid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const today=()=>new Date().toISOString().split('T')[0];
+const todayStr=()=>new Date().toDateString();
+const fmtDate=d=>{if(!d)return'';return new Date(d+'T12:00:00').toLocaleDateString('es',{day:'numeric',month:'short'})};
+const fmtSecs=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+const daysAgo=d=>Math.max(0,Math.floor((Date.now()-new Date(d+'T00:00:00'))/864e5));
+const isOD=t=>t.dueDate&&t.status!=='done'&&t.dueDate<today();
+const pCol=p=>p?(p.color||PCOLS[Math.max(0,S.projects.findIndex(x=>x.id===p.id))%PCOLS.length]):'#aaa';
+const rnd=arr=>arr[Math.floor(Math.random()*arr.length)];
+const getLv=xp=>{let l=0;LVLS.forEach((v,i)=>{if(xp>=v.x)l=i});return l+1};
+const getLvName=xp=>{let l=0;LVLS.forEach((v,i)=>{if(xp>=v.x)l=i});return LVLS[l].n};
+const getLvPct=xp=>{const l=getLv(xp)-1,c=LVLS[l]?.x||0,n=LVLS[l+1]?.x;return n?Math.min(100,Math.round((xp-c)/(n-c)*100)):100};
+ 
+// ── PERSISTENCIA ─────────────────────────────────────────────
+function load(){
+  try{const d=localStorage.getItem(SK);if(d)Object.assign(S,JSON.parse(d));}catch(e){}
+  S.tasks=(S.tasks||[]).map(t=>({...t,status:t.status||(t.kanbanStatus==='done'?'done':t.kanbanStatus==='waiting'?'wait':'todo'),dueDate:t.dueDate||today()}));
+  S.projects=(S.projects||[]).map(p=>({...p,category:p.category||(p.id==='p-personal'||p.id==='personal'?'personal':'business')}));
+  if(!S.subtasks)S.subtasks=[];if(!S.notas)S.notas='';
   if(!S.g)S.g={xp:0,level:1,streak:0,lastDate:''};
-  if(!S.pom)S.pom={seconds:1500,running:false,sessions:0,mode:'work'};
+  if(!S.pom)S.pom={secs:1500,running:false,sessions:0,mode:'work'};
   if(!S.cfg||!('token' in S.cfg))S.cfg={token:'',chatId:'',dailyTime:'09:00',enabled:false,lastDaily:''};
-  if(!S.tontas)S.tontas=[];
-  const td=new Date().toDateString();
-  if(S.g.lastDate!==td){const yd=new Date(Date.now()-86400000).toDateString();S.g.streak=(S.g.lastDate===yd)?S.g.streak+1:1;S.g.lastDate=td;saveS();}
+  const td=todayStr();
+  if(S.g.lastDate!==td){const yd=new Date(Date.now()-864e5).toDateString();S.g.streak=S.g.lastDate===yd?S.g.streak+1:1;S.g.lastDate=td;save();}
   S.pom.running=false;
-  if(S.cfg.token&&S.cfg.chatId)TAB='enfoque';
 }
-function saveS(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}}
-function pCol(p){return p?(p.color||PCOLS[Math.max(0,S.projects.findIndex(x=>x.id===p.id))%PCOLS.length]):'#888'}
-function pTsk(pid){return S.tasks.filter(t=>t.projectId===pid)}
-function pPct(pid){const ts=pTsk(pid);return ts.length?Math.round(ts.filter(t=>t.kanbanStatus==='done').length/ts.length*100):0}
-function kTsk(st){return S.tasks.filter(t=>t.kanbanStatus===st)}
-function gLv(xp){let l=0;LVLS.forEach((v,i)=>{if(xp>=v.xp)l=i});return l+1}
-function gNm(xp){let l=0;LVLS.forEach((v,i)=>{if(xp>=v.xp)l=i});return LVLS[l].n}
-function gPct(xp){const l=gLv(xp)-1;const c=LVLS[l]?.xp||0;const n=LVLS[l+1]?.xp;return n?Math.min(100,Math.round((xp-c)/(n-c)*100)):100}
-function isOD(t){return t.dueDate&&t.kanbanStatus!=='done'&&new Date(t.dueDate)<new Date(new Date().toDateString())}
-function isTD(t){return t.dueDate&&t.kanbanStatus!=='done'&&t.dueDate===new Date().toISOString().split('T')[0]}
-function fmtD(d){if(!d)return'';return new Date(d+'T12:00:00').toLocaleDateString('es',{day:'numeric',month:'short'})}
-function fmtT(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
-function nextTask(){
-  const p=S.tasks.filter(t=>t.kanbanStatus!=='done');if(!p.length)return null;
-  const od=p.filter(t=>isOD(t)).sort((a,b)=>PRX[b.priority]-PRX[a.priority]);if(od.length)return od[0];
-  const td=p.filter(t=>isTD(t)).sort((a,b)=>PRX[b.priority]-PRX[a.priority]);if(td.length)return td[0];
-  return p.sort((a,b)=>PRX[b.priority]-PRX[a.priority])[0];
-}
-async function sendTG(txt){
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+ 
+// ── TELEGRAM ─────────────────────────────────────────────────
+async function tg(txt){
   const{token,chatId,enabled}=S.cfg;if(!token||!chatId||!enabled)return;
-  try{await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:txt,parse_mode:'HTML'})})}catch(e){}
+  try{await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text:txt,parse_mode:'HTML'})});}catch(e){}
 }
 async function checkRem(){
   if(!S.cfg.enabled||!S.cfg.token||!S.cfg.chatId)return;
-  const now=new Date(),td=now.toDateString();
+  const now=new Date(),td=todayStr();
   if(S.cfg.dailyTime&&S.cfg.lastDaily!==td){
     const[h,m]=S.cfg.dailyTime.split(':').map(Number);
     if(now.getHours()*60+now.getMinutes()>=h*60+m){
-      const pend=S.tasks.filter(t=>t.kanbanStatus!=='done').length;
+      const todo=S.tasks.filter(t=>t.status==='todo').length;
+      const wait=S.tasks.filter(t=>t.status==='wait').length;
       const ovd=S.tasks.filter(t=>isOD(t)).length;
-      await sendTG(`☀️ <b>Revisión diaria</b>\n${pend} tarea${pend!==1?'s':''} pendiente${pend!==1?'s':''}${ovd?`\n⚠️ ${ovd} vencida${ovd!==1?'s':''}`:''}\n\n🔥 Racha: ${S.g.streak} días | ⚡ Nv.${S.g.level} ${gNm(S.g.xp)}`);
-      S.cfg.lastDaily=td;saveS();
+      const ovdStr=ovd?`\n⚠️ ${ovd} vencida${ovd!==1?'s':''}`:' ';
+      const msg=rnd(TG_DAILY).replace(/\{todo\}/g,todo).replace(/\{wait\}/g,wait).replace(/\{ovd\}/g,ovdStr).replace(/\{s\}/g,S.g.streak).replace(/\{lv\}/g,S.g.level).replace(/\{lvn\}/g,getLvName(S.g.xp));
+      await tg(msg);S.cfg.lastDaily=td;save();
     }
   }
-  const ods=S.tasks.filter(t=>isOD(t)&&!t.tgSent);
-  for(const t of ods){await sendTG(`⚠️ <b>Tarea vencida</b>\n"${t.text}"\nPrioridad: ${t.priority}`);t.tgSent=true;}
-  if(ods.length)saveS();
+  const ovds=S.tasks.filter(t=>isOD(t)&&!t.tgSent);
+  for(const t of ovds){const d=daysAgo(t.dueDate);await tg(rnd(TG_OVD).replace(/\{t\}/g,t.text).replace(/\{d\}/g,d).replace(/\{ds\}/g,d!==1?'s':''));t.tgSent=true;}
+  if(ovds.length)save();
 }
+ 
+async function push20(){
+  if(!S.cfg.enabled||!S.cfg.token||!S.cfg.chatId)return;
+  // Get all pending tasks (todo + wait)
+  const pending=S.tasks.filter(t=>t.status!=='done');
+  if(!pending.length)return;
+  // Pick 3-5 random tasks to mention
+  const shuffled=[...pending].sort(()=>Math.random()-0.5);
+  const picked=shuffled.slice(0,Math.min(5,shuffled.length));
+  const taskLines=picked.map(t=>{
+    const proj=S.projects.find(p=>p.id===t.projectId);
+    const projName=proj?` [${proj.name}]`:'';
+    const flag=isOD(t)?'⚠️':t.status==='wait'?'⏳':'📋';
+    return`${flag} ${t.text}${projName}`;
+  }).join('\n');
+  const msg=rnd(TG_PUSH)
+    .replace(/\{tareas\}/g,taskLines)
+    .replace(/\{s\}/g,S.g.streak)
+    .replace(/\{lv\}/g,S.g.level)
+    .replace(/\{lvn\}/g,getLvName(S.g.xp));
+  await tg(msg);
+}
+ 
+// ── POMODORO ─────────────────────────────────────────────────
 function startPom(){
-  if(pomInt)return;S.pom.running=true;saveS();
+  if(pomInt)return;S.pom.running=true;save();
   pomInt=setInterval(async()=>{
-    if(S.pom.seconds>0){
-      S.pom.seconds--;
-      const d=document.getElementById('ptd');if(d)d.textContent=fmtT(S.pom.seconds);
-      const tot=S.pom.mode==='work'?1500:300;
-      const b=document.getElementById('ptb');if(b)b.style.width=Math.round((1-S.pom.seconds/tot)*100)+'%';
-      if(S.pom.seconds%30===0)saveS();
+    if(S.pom.secs>0){
+      S.pom.secs--;
+      const el=document.getElementById('ptd');if(el)el.textContent=fmtSecs(S.pom.secs);
+      const tot=S.pom.mode==='work'?1500:300,circ=2*Math.PI*85;
+      const c=document.getElementById('pc');if(c)c.style.strokeDashoffset=circ-(circ*(1-S.pom.secs/tot));
+      if(S.pom.secs%30===0)save();
     }else{
       clearInterval(pomInt);pomInt=null;S.pom.running=false;S.pom.sessions++;
-      if(S.pom.mode==='work'){S.pom.mode='break';S.pom.seconds=300;sendTG('🍅 <b>Pomodoro completado!</b>\nDescansa 5 minutos.');}
-      else{S.pom.mode='work';S.pom.seconds=1500;sendTG('💪 <b>Descanso terminado!</b>\nA enfocarse.');}
-      saveS();render();
+      if(S.pom.mode==='work'){S.pom.mode='break';S.pom.secs=300;tg('🍅 <b>25 minutos completados.</b>\nDescansa 5 min. Te lo ganaste.\n\nCada pomodoro es una inversión en ti mismo. 💪');}
+      else{S.pom.mode='work';S.pom.secs=1500;tg('⚡ <b>Descanso terminado.</b>\n¿Listo para el siguiente round?\n\nRecuerda: no necesitas motivación para empezar. Solo necesitas empezar.');}
+      save();render();
     }
   },1000);render();
 }
-function pausePom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;saveS();render()}
-function resetPom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;S.pom.seconds=S.pom.mode==='work'?1500:300;saveS();render()}
-async function gainXP(amt,msg){
-  S.g.xp+=amt;const nl=gLv(S.g.xp);
-  if(nl>S.g.level){S.g.level=nl;celMsg=`Subiste a ${gNm(S.g.xp)}! +${amt} XP`;sendTG(`🏆 <b>Nuevo nivel!</b> Ahora eres <b>${gNm(S.g.xp)}</b>`);}
-  else celMsg=msg||`+${amt} XP`;
-  saveS();
+function pausePom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;save();render();}
+function resetPom(){clearInterval(pomInt);pomInt=null;S.pom.running=false;S.pom.secs=S.pom.mode==='work'?1500:300;save();render();}
+ 
+// ── XP ───────────────────────────────────────────────────────
+async function gainXP(amt){
+  S.g.xp+=amt;const nl=getLv(S.g.xp);
+  if(nl>S.g.level){
+    S.g.level=nl;celMsg=`¡SUBISTE A ${getLvName(S.g.xp).toUpperCase()}! Tu cerebro ADHD acaba de desbloquear un nuevo nivel 🔓`;
+    launchConfetti();
+    tg(`🏆 <b>¡NUEVO NIVEL!</b>\nAhora eres: <b>${getLvName(S.g.xp)}</b>\n\nEsto no es un juego — esto es tu vida cambiando.\nSigue así. 💪\n\n⚡ ${S.g.xp} XP acumulados`);
+  }else{celMsg=rnd(FUNNY);launchConfetti();}
+  save();
 }
-function setTab(t){TAB=t;render();if(t==='captura')setTimeout(()=>document.getElementById('cap-ti')?.focus(),60)}
-function setFilt(f){TF=f;render()}
-function togView(){VW=VW==='kanban'?'proj':'kanban';render()}
-function togAP(){SAP=!SAP;render();if(SAP)setTimeout(()=>document.getElementById('pi')?.focus(),60)}
-function setPri(p){cPri=p;render();setTimeout(()=>document.getElementById('cap-ti')?.focus(),50)}
-function setCP(v){cProj=v}
-async function addTask(px){
-  const inp=document.getElementById(`${px}-ti`);const txt=inp?.value?.trim();if(!txt)return;
-  const pri=px==='cap'?cPri:(document.getElementById(`${px}-tp`)?.value||'media');
-  const proj=px==='cap'?cProj:(document.getElementById(`${px}-tpr`)?.value||'');
-  const dd=document.getElementById(`${px}-td`)?.value||'';
-  S.tasks.push({id:gid(),text:txt,priority:pri,projectId:proj,kanbanStatus:'todo',dueDate:dd,createdAt:new Date().toISOString()});
-  if(px==='cap'){cPri='media';cProj='';}
-  saveS();render();setTimeout(()=>document.getElementById(`${px}-ti`)?.focus(),50);
+ 
+// ── TAREAS ───────────────────────────────────────────────────
+function addTask(){
+  const txt=document.getElementById('nt')?.value?.trim();
+  const proj=document.getElementById('np')?.value||'';
+  const errEl=document.getElementById('np-err');
+  const inpEl=document.getElementById('np');
+  if(!proj){
+    if(inpEl)inpEl.classList.add('err');
+    if(errEl)errEl.style.display='flex';
+    setTimeout(()=>{if(inpEl)inpEl.classList.remove('err');if(errEl)errEl.style.display='none';},3000);
+    return;
+  }
+  if(!txt){document.getElementById('nt')?.classList.add('err');setTimeout(()=>document.getElementById('nt')?.classList.remove('err'),2000);return;}
+  S.tasks.push({id:gid(),text:txt,projectId:proj,status:'todo',dueDate:today(),createdAt:new Date().toISOString()});
+  document.getElementById('nt').value='';save();render();setTimeout(()=>document.getElementById('nt')?.focus(),40);
 }
-async function togTask(id){
+async function setStatus(id,st){
   const t=S.tasks.find(x=>x.id===id);if(!t)return;
-  if(t.kanbanStatus==='done'){t.kanbanStatus='todo';delete t.completedDate;delete t.tgSent;}
-  else{t.kanbanStatus='done';t.completedDate=new Date().toDateString();const xp=PRX[t.priority]||10;await gainXP(xp,`Completada! +${xp} XP`);sendTG(`✅ <b>Completada:</b> "${t.text}"\n+${xp} XP | Total: ${S.g.xp} XP`);}
-  saveS();render();
+  const prev=t.status;t.status=st;
+  if(st==='done'&&prev!=='done'){
+    t.doneDate=todayStr();await gainXP(15);
+    tg(rnd(TG_COMP).replace(/\{t\}/g,t.text).replace(/\{s\}/g,S.g.streak).replace(/\{xp\}/g,S.g.xp).replace(/\{lv\}/g,S.g.level));
+  }else if(st!=='done'){delete t.doneDate;delete t.tgSent;}
+  save();render();
 }
-function delTask(id){S.tasks=S.tasks.filter(t=>t.id!==id);saveS();render()}
-async function moveTask(id,st){
-  const t=S.tasks.find(x=>x.id===id);if(!t)return;
-  t.kanbanStatus=st;
-  if(st==='done'){t.completedDate=new Date().toDateString();const xp=PRX[t.priority]||10;await gainXP(xp);sendTG(`✅ "${t.text}" +${xp} XP`);}
-  else delete t.completedDate;
-  saveS();render();
-}
-function addProj(){
-  const name=document.getElementById('pi')?.value?.trim();if(!name)return;
-  S.projects.push({id:gid(),name,color:PCOLS[S.projects.length%PCOLS.length],createdAt:new Date().toISOString()});
-  SAP=false;saveS();render();
-}
-function delProj(id){
-  if(['trabajo','personal'].includes(id))return;
-  S.projects=S.projects.filter(p=>p.id!==id);S.tasks=S.tasks.map(t=>t.projectId===id?{...t,projectId:''}:t);
-  saveS();render();
-}
-async function fetchChatId(){
-  const tok=document.getElementById('tg-tok')?.value?.trim();
-  const m=document.getElementById('tg-msg');
-  if(!tok){if(m){m.textContent='Ingresa el token primero';m.style.color='#c00';}return;}
-  if(m){m.textContent='Buscando...';m.style.color='#888';}
-  try{
-    const res=await fetch(`https://api.telegram.org/bot${tok}/getUpdates`);
-    const data=await res.json();
-    if(!data.ok){if(m){m.textContent='Token inválido';m.style.color='#c00';}return;}
-    if(!data.result||!data.result.length){if(m){m.textContent='Envía un mensaje al bot en Telegram primero';m.style.color='#b07000';}return;}
-    const last=data.result[data.result.length-1];
-    const cid=String(last.message?.chat?.id||last.edited_message?.chat?.id||'');
-    if(!cid){if(m){m.textContent='No se encontró Chat ID — envía un mensaje al bot';m.style.color='#b07000';}return;}
-    const el=document.getElementById('tg-cid');if(el)el.value=cid;
-    if(m){m.textContent='Chat ID encontrado: '+cid;m.style.color='#2e7d32';}
-  }catch(err){if(m){m.textContent='Error de conexión';m.style.color='#c00';}}
-}
-function saveConfig(){
-  S.cfg.token=document.getElementById('tg-tok')?.value?.trim()||'';
-  S.cfg.chatId=document.getElementById('tg-cid')?.value?.trim()||'';
-  S.cfg.dailyTime=document.getElementById('cfg-time')?.value||'09:00';
-  S.cfg.enabled=document.getElementById('cfg-ena')?.checked||false;
-  saveS();
-  const m=document.getElementById('tg-msg');
-  if(m){m.textContent='Guardado';m.style.color='#2e7d32';setTimeout(()=>{if(m)m.textContent=''},3000);}
-  render();
-}
-async function testTG(){
-  const tok=document.getElementById('tg-tok')?.value?.trim();
-  const cid=document.getElementById('tg-cid')?.value?.trim();
-  const m=document.getElementById('tg-msg');
-  if(!tok||!cid){if(m){m.textContent='Necesitas token y Chat ID';m.style.color='#c00';}return;}
-  if(m){m.textContent='Enviando...';m.style.color='#888';}
-  try{
-    const res=await fetch(`https://api.telegram.org/bot${tok}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:cid,text:`🎉 <b>Sistema activo!</b>\n\n🔥 Racha: ${S.g.streak} días\n⚡ Nivel ${S.g.level}: ${gNm(S.g.xp)}\n📋 Pendientes: ${S.tasks.filter(t=>t.kanbanStatus!=='done').length} tareas\n\n¡Los recordatorios ya funcionan!`,parse_mode:'HTML'})});
-    const data=await res.json();
-    if(data.ok){if(m){m.textContent='Revisa Telegram!';m.style.color='#2e7d32';setTimeout(()=>{if(m)m.textContent=''},5000);}}
-    else{if(m){m.textContent='Error: '+(data.description||'verifica los datos');m.style.color='#c00';}}
-  }catch(err){if(m){m.textContent='Error de conexión';m.style.color='#c00';}}
-}
-function render(){
-  const app=document.getElementById('app');
-  const tabs=[['enfoque','ti-target','Enfoque'],['captura','ti-bolt','Captura'],['tareas','ti-checks','Tareas'],['proyectos','ti-folders','Proyectos'],['ajustes','ti-settings','Ajustes']];
-  const cv=celMsg?`<div class="cel"><i class="ti ti-star"></i> ${esc(celMsg)}</div>`:'';celMsg='';
-  app.innerHTML=`<div class="tabs">${tabs.map(([t,ic,lb])=>`<button class="tab${TAB===t?' active':''}" onclick="setTab('${t}')"><i class="ti ${ic}"></i>${lb}</button>`).join('')}</div>${cv}<div>${rView()}</div>`;
-}
-function rView(){
-  if(TAB==='enfoque')return rEnf();if(TAB==='captura')return rCap();
-  if(TAB==='tareas')return rTar();if(TAB==='proyectos')return rProy();
-  if(TAB==='ajustes')return rAj();return'';
-}
-function rEnf(){
-  const nx=nextTask();const iW=S.pom.mode==='work';const pc=iW?'#534AB7':'#1D9E75';
-  const tot=S.tasks.length,dn=S.tasks.filter(t=>t.kanbanStatus==='done').length,ovd=S.tasks.filter(t=>isOD(t)).length;
-  const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
-  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.875rem;flex-wrap:wrap;gap:6px">
-  <div class="lvbadge"><i class="ti ti-shield-star" style="font-size:14px;color:#534AB7"></i>Nv.${S.g.level} — ${gNm(S.g.xp)}</div>
-  <div style="display:flex;gap:6px;align-items:center">
-    ${conn?`<div style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#2e7d32;background:#e8f5e9;padding:3px 8px;border-radius:99px"><i class="ti ti-brand-telegram" style="font-size:12px"></i>Telegram activo</div>`:`<div style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#888;background:#f0efe9;padding:3px 8px;border-radius:99px;cursor:pointer" onclick="setTab('ajustes')"><i class="ti ti-bell-off" style="font-size:12px"></i>Activar alertas</div>`}
-    <div class="skbadge"><i class="ti ti-flame" style="font-size:14px"></i>${S.g.streak} día${S.g.streak!==1?'s':''}</div>
-  </div></div>
-<div style="margin-bottom:1rem">
-  <div style="display:flex;justify-content:space-between;font-size:11px;color:#666;margin-bottom:3px"><span>${S.g.xp} XP</span><span>Nv.${S.g.level+1}: ${LVLS[Math.min(S.g.level,9)]?.xp||'MAX'} XP</span></div>
-  <div class="xw"><div class="xf" style="width:${gPct(S.g.xp)}%"></div></div>
-</div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
-  <div class="metric"><div class="ml">Completadas</div><div class="mv" style="color:#2e7d32">${dn}</div></div>
-  <div class="metric"><div class="ml">Pendientes</div><div class="mv" style="color:#8a5c00">${tot-dn}</div></div>
-  <div class="metric"><div class="ml">Vencidas</div><div class="mv" style="color:${ovd?'#c00':'#1a1a1a'}">${ovd}</div></div>
-</div>
-<div class="pcard">
-  <div style="font-size:10px;color:${pc};font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">${iW?'Sesión de trabajo':'Descanso'} — Sesión ${S.pom.sessions+1}</div>
-  <div id="ptd" class="ptm" style="color:${pc}">${fmtT(S.pom.seconds)}</div>
-  <div class="pw" style="height:4px;margin:10px 0"><div id="ptb" class="pf" style="width:${Math.round((1-S.pom.seconds/(iW?1500:300))*100)}%;background:${pc}"></div></div>
-  <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-    ${!S.pom.running?`<button class="btn btnp blg" onclick="startPom()"><i class="ti ti-player-play"></i>Iniciar 25 min</button>`:`<button class="btn blg" onclick="pausePom()"><i class="ti ti-player-pause"></i>Pausar</button>`}
-    <button class="btn blg" onclick="resetPom()"><i class="ti ti-refresh"></i></button>
-  </div>
-  ${S.pom.sessions?`<div style="font-size:11px;color:#aaa;margin-top:8px">${S.pom.sessions} pomodoro${S.pom.sessions!==1?'s':''} hoy</div>`:''}
-</div>
-${nx?`<div class="fcard">
-  <div style="font-size:10px;font-weight:500;color:#185FA5;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Haz esto ahora</div>
-  <div style="font-size:16px;font-weight:500;margin-bottom:10px">${esc(nx.text)}</div>
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <span class="badge ${nx.priority==='alta'?'ba':nx.priority==='media'?'bm':'bb'}">${nx.priority}</span>
-    ${nx.dueDate?`<span style="font-size:11px;color:${isOD(nx)?'#c00':'#666'}">${isOD(nx)?'Vencida — ':''}${fmtD(nx.dueDate)}</span>`:''}
-    <button class="btn btng" style="margin-left:auto" onclick="togTask('${nx.id}')"><i class="ti ti-check"></i>Completar</button>
-  </div></div>`:`<div class="empty"><i class="ti ti-mood-happy" style="font-size:28px;display:block;margin-bottom:8px"></i>${tot?'Todo al día — eres una leyenda.':'Usa Captura para agregar tu primera tarea'}</div>`}`;
-}
-function rCap(){
-  const rec=S.tasks.filter(t=>t.kanbanStatus!=='done').slice(-5).reverse();
-  return`<div style="margin-bottom:0.875rem">
-  <p style="font-size:22px;font-weight:500;margin-bottom:3px">¿Qué tienes en la cabeza?</p>
-  <p style="font-size:13px;color:#666">Escríbelo ya — sin pensar demasiado.</p>
-</div>
-<input type="text" id="cap-ti" class="capinp" placeholder="Ej: Llamar al banco, terminar informe..." onkeydown="if(event.key==='Enter')addTask('cap')" />
-<div style="margin-bottom:10px">
-  <div style="font-size:12px;color:#666;margin-bottom:6px">Prioridad:</div>
-  <div class="pribtns">
-    <button class="pribtn pralta${cPri==='alta'?' sel':''}" onclick="setPri('alta')"><i class="ti ti-flame"></i> Alta</button>
-    <button class="pribtn prmedia${cPri==='media'?' sel':''}" onclick="setPri('media')"><i class="ti ti-bolt"></i> Media</button>
-    <button class="pribtn prbaja${cPri==='baja'?' sel':''}" onclick="setPri('baja')"><i class="ti ti-leaf"></i> Baja</button>
-  </div>
-</div>
-<div class="arow" style="margin-bottom:14px">
-  <select onchange="setCP(this.value)" style="flex:1"><option value="">Sin proyecto</option>${S.projects.map(p=>`<option value="${p.id}"${cProj===p.id?' selected':''}>${esc(p.name)}</option>`).join('')}</select>
-  <input type="date" id="cap-td" />
-  <button class="btn btnp" style="padding:8px 16px;font-size:13px" onclick="addTask('cap')"><i class="ti ti-plus"></i>Guardar</button>
-</div>
-${rec.length?`<div class="hdiv"></div><p class="stl">Recién capturadas</p>${rec.map(t=>rItem(t,true)).join('')}`:''}`;
-}
-function rItem(t,mini=false){
-  const proj=S.projects.find(p=>p.id===t.projectId);
-  const bc=PRC[t.priority]||'#888';const iD=t.kanbanStatus==='done';const ov=isOD(t);
-  return`<div class="titem" style="border-left:3px solid ${bc}">
-    <input type="checkbox" class="tchk" ${iD?'checked':''} onchange="togTask('${t.id}')"/>
-    <span class="ttxt${iD?' done':''}">${esc(t.text)}</span>
-    ${!mini?`<span class="badge ${t.priority==='alta'?'ba':t.priority==='media'?'bm':'bb'}">${t.priority}</span>`:''}
-    ${ov?`<span class="bov">Vencida</span>`:t.dueDate&&!iD?`<span style="font-size:10px;color:#666;flex-shrink:0">${fmtD(t.dueDate)}</span>`:''}
-    ${proj&&!mini?`<span class="badge" style="background:${pCol(proj)}20;color:${pCol(proj)}">${esc(proj.name)}</span>`:''}
-    <button class="tdel" onclick="delTask('${t.id}')"><i class="ti ti-x" style="font-size:12px"></i></button>
+function delTask(id){if(!confirm('¿Eliminar esta tarea?'))return;S.tasks=S.tasks.filter(t=>t.id!==id);save();render();}
+ 
+// ── EDITAR TAREA ─────────────────────────────────────────────
+function openEditTask(id){
+  editTask=S.tasks.find(t=>t.id===id);if(!editTask)return;
+  const projOpts=S.projects.map(p=>`<option value="${p.id}"${p.id===editTask.projectId?' selected':''}>${esc(p.name)}</option>`).join('');
+  document.getElementById('modal-root').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-title" style="color:#534AB7"><i class="ti ti-pencil" style="font-size:18px"></i>Editar tarea</div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:600;color:#888;margin-bottom:4px;display:block">Texto de la tarea</label>
+        <input type="text" id="edit-txt" class="inp" value="${esc(editTask.text)}" />
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:600;color:#888;margin-bottom:4px;display:block">Proyecto <span style="color:#E24B4A">*</span></label>
+        <select id="edit-proj" class="sel" style="width:100%">
+          ${projOpts}
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+        <button class="btn" onclick="closeModal()">Cancelar</button>
+        <button class="btn btng" onclick="saveEditTask()"><i class="ti ti-check"></i>Guardar</button>
+      </div>
+    </div>
   </div>`;
 }
-function rTar(){
-  let ts=[...S.tasks];
-  if(TF==='pend')ts=ts.filter(t=>t.kanbanStatus!=='done');
-  else if(TF==='done')ts=ts.filter(t=>t.kanbanStatus==='done');
-  else if(TF==='hoy')ts=ts.filter(t=>isTD(t)||isOD(t));
-  else if(TF==='alta')ts=ts.filter(t=>t.priority==='alta'&&t.kanbanStatus!=='done');
-  ts.sort((a,b)=>{if(isOD(a)&&!isOD(b))return-1;if(!isOD(a)&&isOD(b))return 1;return PRX[b.priority]-PRX[a.priority];});
-  return`<p class="stl">Todas las tareas</p>
-<div class="arow">
-  <input type="text" id="t-ti" placeholder="Nueva tarea..." onkeydown="if(event.key==='Enter')addTask('t')" />
-  <select id="t-tp"><option value="media">Media</option><option value="alta">Alta</option><option value="baja">Baja</option></select>
-  <select id="t-tpr"><option value="">Sin proyecto</option>${S.projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select>
-  <input type="date" id="t-td" />
-  <button class="btn btng" onclick="addTask('t')"><i class="ti ti-plus"></i></button>
-</div>
-<div class="frow">${[['all','Todas'],['pend','Pendientes'],['hoy','Hoy/Vencidas'],['alta','Alta'],['done','Hechas']].map(([v,l])=>`<button class="fbtn${TF===v?' fa':''}" onclick="setFilt('${v}')">${l}</button>`).join('')}</div>
-${ts.length?ts.map(t=>rItem(t)).join(''):`<div class="empty">Sin tareas aquí</div>`}`;
+function saveEditTask(){
+  const txt=document.getElementById('edit-txt')?.value?.trim();
+  const proj=document.getElementById('edit-proj')?.value||'';
+  if(!txt||!proj)return;
+  const t=S.tasks.find(x=>x.id===editTask.id);
+  if(t){t.text=txt;t.projectId=proj;}
+  closeModal();save();render();
 }
-function rProy(){
-  const iK=VW==='kanban';
-  return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.875rem;flex-wrap:wrap;gap:6px">
-  <p class="stl" style="margin:0">Proyectos & Kanban</p>
-  <div style="display:flex;gap:5px">
-    <button class="btn${iK?' btnp':''}" onclick="togView()"><i class="ti ti-layout-columns"></i>Kanban</button>
-    <button class="btn${!iK?' btnp':''}" onclick="togView()"><i class="ti ti-folder"></i>Proyectos</button>
-    <button class="btn" onclick="togAP()"><i class="ti ti-plus"></i></button>
-  </div></div>
-${SAP?`<div class="apf"><div class="arow"><input type="text" id="pi" placeholder="Nombre del proyecto..."/><button class="btn btng" onclick="addProj()">Crear</button><button class="btn" onclick="togAP()">Cancelar</button></div></div>`:''}
-${iK?rKanban():rProjCards()}`;
+ 
+// ── PROYECTOS ────────────────────────────────────────────────
+function addProj(){
+  const el=document.getElementById('pname');const name=el?.value?.trim();if(!name)return;
+  const cat=document.getElementById('pcat')?.value||'business';
+  const pid=gid();
+  S.projects.push({id:pid,name,color:PCOLS[S.projects.length%PCOLS.length],category:cat});
+  el.value='';openProjs[pid]=true;openCats[cat]=true;save();render();
 }
-function rKanban(){
-  const cols=[{id:'todo',label:'Por hacer',col:'#534AB7'},{id:'doing',label:'En progreso',col:'#BA7517'},{id:'done',label:'Completado',col:'#1D9E75'}];
-  return`<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">${cols.map(col=>{
-    const tasks=kTsk(col.id);
-    return`<div class="kcol"><div class="khead">
-      <span style="display:flex;align-items:center;gap:5px;color:${col.col}"><span style="width:6px;height:6px;border-radius:50%;background:${col.col};display:inline-block"></span>${col.label}</span>
-      <span style="font-size:10px;padding:1px 6px;border-radius:99px;background:#fff;color:#666;border:1px solid #ddd">${tasks.length}</span>
-    </div>
-    ${tasks.map(t=>{const proj=S.projects.find(p=>p.id===t.projectId);const ov=isOD(t);
-      return`<div class="kcard" style="border:${ov?'1px solid #f5a5a5':'1px solid #e0e0e0'};border-left:3px solid ${PRC[t.priority]}">
-        <div class="ktxt">${esc(t.text)}</div>
-        <div style="display:flex;gap:3px;margin-bottom:5px;flex-wrap:wrap;align-items:center">
-          <span class="badge ${t.priority==='alta'?'ba':t.priority==='media'?'bm':'bb'}">${t.priority}</span>
-          ${ov?`<span class="bov">Vencida</span>`:t.dueDate?`<span style="font-size:10px;color:#666">${fmtD(t.dueDate)}</span>`:''}
-          ${proj?`<span class="badge" style="background:${pCol(proj)}20;color:${pCol(proj)}">${esc(proj.name)}</span>`:''}
-        </div>
-        <div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center">
-          ${col.id!=='todo'?`<button class="kbtn" onclick="moveTask('${t.id}','${col.id==='doing'?'todo':'doing'}')">← ${col.id==='doing'?'Volver':'Prog.'}</button>`:''}
-          ${col.id!=='done'?`<button class="kbtn" onclick="moveTask('${t.id}','${col.id==='todo'?'doing':'done'}')" style="${col.id==='doing'?'color:#2e7d32':''}">${col.id==='todo'?'Iniciar →':'Completar'}</button>`:''}
-          <button class="tdel" onclick="delTask('${t.id}')" style="margin-left:auto"><i class="ti ti-x" style="font-size:10px"></i></button>
-        </div>
-      </div>`;
-    }).join('')}
-    ${!tasks.length?`<div style="font-size:11px;color:#aaa;text-align:center;padding:12px 0">Sin tareas</div>`:''}
-    </div>`;
-  }).join('')}</div>`;
-}
-function rProjCards(){
-  return S.projects.length?S.projects.map(p=>{
-    const pct=pPct(p.id),ts=pTsk(p.id),dc=ts.filter(t=>t.kanbanStatus==='done').length,col=pCol(p);
-    return`<div class="pjcard">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span style="font-size:14px;font-weight:500;display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${esc(p.name)}</span>
-        <div style="display:flex;align-items:center;gap:7px">
-          <span style="font-size:11px;color:#666">${dc}/${ts.length}</span>
-          <span style="font-size:12px;font-weight:500;color:${col}">${pct}%</span>
-          ${!['trabajo','personal'].includes(p.id)?`<button class="tdel" onclick="delProj('${p.id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:''}
+function openEditProj(id){
+  editProj=S.projects.find(p=>p.id===id);if(!editProj)return;
+  document.getElementById('modal-root').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-title" style="color:#229ED9"><i class="ti ti-folder-filled" style="font-size:18px"></i>Editar proyecto</div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:600;color:#888;margin-bottom:4px;display:block">Nombre del proyecto</label>
+        <input type="text" id="edit-pname" class="inp" value="${esc(editProj.name)}" />
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:600;color:#888;margin-bottom:4px;display:block">Categoría</label>
+        <select id="edit-pcat" class="sel" style="width:100%">
+          <option value="business"${editProj.category==='business'?' selected':''}>💼 Business</option>
+          <option value="personal"${editProj.category==='personal'?' selected':''}>🏠 Personal</option>
+        </select>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:600;color:#888;margin-bottom:4px;display:block">Color</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${PCOLS.map(c=>`<div onclick="document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('color-sel'));this.classList.add('color-sel');this.dataset.col='${c}'" data-col="${c}" class="color-opt${editProj.color===c?' color-sel':''}" style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:3px solid ${editProj.color===c?'#1a1a1a':'transparent'};transition:all 0.1s"></div>`).join('')}
         </div>
       </div>
-      <div class="pw" style="margin-bottom:8px"><div class="pf" style="width:${pct}%;background:${col}"></div></div>
-      ${ts.length?ts.slice(0,3).map(t=>rItem(t,true)).join(''):`<div style="font-size:12px;color:#aaa;padding:6px 0">Sin tareas aún</div>`}
-      ${ts.length>3?`<div style="font-size:11px;color:#666;text-align:right;margin-top:4px">+${ts.length-3} más</div>`:''}
-    </div>`;
-  }).join(''):`<div class="empty">Sin proyectos adicionales</div>`;
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+        <button class="btn" onclick="closeModal()">Cancelar</button>
+        <button class="btn btng" onclick="saveEditProj()"><i class="ti ti-check"></i>Guardar</button>
+      </div>
+    </div>
+  </div>`;
+  document.querySelectorAll('.color-opt').forEach(el=>{
+    el.addEventListener('click',()=>{
+      document.querySelectorAll('.color-opt').forEach(x=>{x.style.border='3px solid transparent';});
+      el.style.border='3px solid #1a1a1a';
+    });
+  });
 }
-function rAj(){
+function saveEditProj(){
+  const name=document.getElementById('edit-pname')?.value?.trim();
+  const cat=document.getElementById('edit-pcat')?.value||'business';
+  const selCol=document.querySelector('.color-opt.color-sel, .color-opt[style*="1a1a1a"]');
+  const color=selCol?.dataset?.col||editProj.color;
+  const p=S.projects.find(x=>x.id===editProj.id);
+  if(p&&name){p.name=name;p.category=cat;p.color=color;}
+  closeModal();save();render();
+}
+function delProj(id){
+  if(['p-work','p-personal'].includes(id)){alert('No puedes eliminar los proyectos base. Edítalos si quieres cambiarles el nombre.');return;}
+  if(!confirm('¿Eliminar proyecto y todas sus subtareas?'))return;
+  S.projects=S.projects.filter(p=>p.id!==id);
+  S.subtasks=S.subtasks.filter(s=>s.projectId!==id);
+  S.tasks=S.tasks.map(t=>t.projectId===id?{...t,projectId:''}:t);
+  save();render();
+}
+function addSub(pid){
+  const el=document.getElementById('si-'+pid);const txt=el?.value?.trim();if(!txt)return;
+  S.subtasks.push({id:gid(),projectId:pid,text:txt,done:false});
+  el.value='';save();render();openProjs[pid]=true;setTimeout(()=>document.getElementById('si-'+pid)?.focus(),40);
+}
+function openEditSub(id){
+  const s=S.subtasks.find(x=>x.id===id);if(!s)return;
+  const newTxt=prompt('Editar paso:',s.text);
+  if(newTxt&&newTxt.trim()){s.text=newTxt.trim();save();render();}
+}
+function togSub(id){
+  const s=S.subtasks.find(x=>x.id===id);if(!s)return;
+  s.done=!s.done;if(s.done){gainXP(8);tg(`✅ <b>Paso completado:</b>\n"${s.text}"\n\nCada paso cuenta. Eres constante. 💪`);}
+  save();render();
+}
+function delSub(id){if(!confirm('¿Eliminar este paso?'))return;S.subtasks=S.subtasks.filter(s=>s.id!==id);save();render();}
+function togProj(id){openProjs[id]=!openProjs[id];render();}
+function togCat(c){openCats[c]=!openCats[c];render();}
+function closeModal(){document.getElementById('modal-root').innerHTML='';}
+ 
+// ── RENDER ───────────────────────────────────────────────────
+function setTab(t){tab=t;render();}
+function setFilt(f){filt=f;render();}
+ 
+function render(){
   const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
-  return`<p class="stl">Configuración</p>
-<div class="csec">
-  <div class="cttl"><i class="ti ti-brand-telegram" style="font-size:18px;color:#229ED9"></i>Recordatorios por Telegram</div>
-  ${conn?`<div style="display:flex;align-items:center;gap:6px;background:#e8f5e9;border-radius:8px;padding:8px 12px;font-size:12px;color:#2e7d32;margin-bottom:12px"><i class="ti ti-circle-check" style="font-size:15px"></i>Telegram conectado y activo</div>`:''}
-  <div style="background:#f5f5f0;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#666;line-height:1.8">
-    <span style="font-weight:500;color:#1a1a1a">Setup rápido:</span><br>
-    1. Busca <b>@BotFather</b> en Telegram → escríbele <b>/newbot</b><br>
-    2. Copia el token que te da<br>
-    3. Manda cualquier mensaje a tu bot nuevo<br>
-    4. Pega el token abajo y presiona "Obtener Chat ID"
+  const cv=celMsg?`<div class="cel">🎉 ${esc(celMsg)}</div>`:'';celMsg='';
+  const done=S.tasks.filter(t=>t.status==='done').length;
+  const total=S.tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  const tabs=[['main','ti-layout-grid','Inicio'],['pomodoro','ti-clock-play','Pomodoro'],['ajustes','ti-settings','Ajustes']];
+ 
+  document.getElementById('root').innerHTML=`
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="lvbadge"><i class="ti ti-shield-star" style="font-size:13px"></i>${getLvName(S.g.xp)}</div>
+    <div class="skbadge"><i class="ti ti-flame" style="font-size:13px"></i>${S.g.streak} días</div>
   </div>
-  <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-    <input type="text" id="tg-tok" value="${esc(S.cfg.token)}" placeholder="Token del bot (123456789:AABBcc...)" style="flex:1;min-width:180px" />
-    <button class="btn btntg" onclick="fetchChatId()"><i class="ti ti-search"></i>Obtener Chat ID</button>
-  </div>
-  <div style="margin-bottom:10px">
-    <input type="text" id="tg-cid" value="${esc(S.cfg.chatId)}" placeholder="Chat ID — escríbelo o usa el botón de arriba" style="width:100%" />
-  </div>
-  <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-    <label style="font-size:12px;color:#666">Revisión diaria a las:</label>
-    <input type="time" id="cfg-time" value="${S.cfg.dailyTime||'09:00'}" style="max-width:130px" />
-  </div>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-    <input type="checkbox" id="cfg-ena" ${S.cfg.enabled?'checked':''} style="width:16px;height:16px;accent-color:#229ED9" />
-    <label for="cfg-ena" style="font-size:13px;cursor:pointer">Activar recordatorios</label>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <button class="btn btng" onclick="saveConfig()"><i class="ti ti-device-floppy"></i>Guardar</button>
-    <button class="btn btntg" onclick="testTG()"><i class="ti ti-send"></i>Enviar prueba</button>
-    <span id="tg-msg" style="font-size:12px"></span>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:11px;color:#888;font-weight:500">${done}/${total} · ${pct}%</span>
+    ${conn
+      ?`<div style="font-size:11px;color:#1D9E75;background:#edfaf5;padding:4px 10px;border-radius:99px;border:1.5px solid #1D9E75;display:inline-flex;align-items:center;gap:4px;font-weight:600"><i class="ti ti-brand-telegram" style="font-size:11px"></i>Activo</div>`
+      :`<div style="font-size:11px;color:#888;cursor:pointer;padding:4px 10px;border-radius:99px;border:1.5px solid #d0d0cc;font-weight:500" onclick="setTab('ajustes')">Activar alertas</div>`}
   </div>
 </div>
-<div class="csec">
-  <div class="cttl"><i class="ti ti-bell" style="font-size:16px;color:#8a5c00"></i>Te llegará mensaje cuando...</div>
-  <div style="font-size:12px;color:#666;line-height:1.9">— Completes una tarea (con XP)<br>— Subas de nivel<br>— Una tarea esté vencida<br>— Termine un pomodoro<br>— Sea hora de tu revisión diaria</div>
+<div style="margin-bottom:4px;display:flex;justify-content:space-between;font-size:10px;color:#aaa;font-weight:500">
+  <span>XP: ${S.g.xp}</span><span>→ ${LVLS[Math.min(getLv(S.g.xp),9)]?.n||'MAX'}</span>
 </div>
-<div class="csec">
-  <div class="cttl"><i class="ti ti-trophy" style="font-size:16px;color:#BA7517"></i>Tu progreso</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <div class="metric"><div class="ml">XP Total</div><div class="mv" style="color:#534AB7">${S.g.xp}</div></div>
-    <div class="metric"><div class="ml">Nivel</div><div class="mv">${S.g.level} — ${gNm(S.g.xp)}</div></div>
-    <div class="metric"><div class="ml">Racha</div><div class="mv" style="color:#BA7517">${S.g.streak} días</div></div>
-    <div class="metric"><div class="ml">Pomodoros</div><div class="mv">${S.pom.sessions}</div></div>
+<div class="xw" style="margin-bottom:14px"><div class="xf" style="width:${getLvPct(S.g.xp)}%"></div></div>
+${cv}
+<div class="tabs">${tabs.map(([t,ic,lb])=>`<button class="tab${tab===t?' active':''}" onclick="setTab('${t}')"><i class="ti ${ic}"></i>${lb}</button>`).join('')}</div>
+${vTab()}`;
+}
+ 
+function vTab(){
+  if(tab==='main')return vMain();
+  if(tab==='pomodoro')return vPom();
+  if(tab==='ajustes')return vAjustes();
+  return'';
+}
+ 
+// ── TAB MAIN ─────────────────────────────────────────────────
+function vMain(){
+  const projOpts=S.projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  const cTodo=S.tasks.filter(t=>t.status==='todo').length;
+  const cWait=S.tasks.filter(t=>t.status==='wait').length;
+  const cDone=S.tasks.filter(t=>t.status==='done').length;
+  const cVenc=S.tasks.filter(t=>isOD(t)).length;
+ 
+  const streakBar=S.g.streak>=3?`<div style="background:linear-gradient(135deg,#fffbeb,#fff8f0);border:1.5px solid #f59e0b;border-radius:12px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(245,158,11,0.1)">
+    <span style="font-size:26px">🔥</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#d4870a">${S.g.streak} días de racha. Eso no es suerte, eso es carácter.</div>
+      <div style="font-size:11px;color:#b07010;margin-top:2px">No la rompas hoy 💪</div>
+    </div>
+  </div>`:'';
+ 
+  return`
+${streakBar}
+<div class="stat-row">
+  <div class="stat"><div class="stat-v" style="color:#534AB7">${cTodo}</div><div class="stat-l">Por hacer</div></div>
+  <div class="stat"><div class="stat-v" style="color:#229ED9">${cWait}</div><div class="stat-l">Esperando</div></div>
+  <div class="stat"><div class="stat-v" style="color:#E24B4A">${cVenc}</div><div class="stat-l">Vencidas</div></div>
+  <div class="stat"><div class="stat-v" style="color:#1D9E75">${cDone}</div><div class="stat-l">Hechas 🎯</div></div>
+</div>
+ 
+<div class="card" style="margin-bottom:12px">
+  <div style="display:flex;gap:6px;margin-bottom:9px">
+    <input type="text" id="nt" class="inp" placeholder="¿Qué tienes que hacer?" style="flex:1" onkeydown="if(event.key==='Enter')addTask()" />
+    <button class="btn btng" onclick="addTask()"><i class="ti ti-plus"></i>Agregar</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start">
+    <div style="flex:1;min-width:160px">
+      <select id="np" class="sel" style="width:100%">
+        <option value="">— Selecciona un proyecto —</option>
+        ${projOpts}
+      </select>
+      <div id="np-err" class="errmsg" style="display:none"><i class="ti ti-alert-circle" style="font-size:12px"></i>Debes seleccionar un proyecto</div>
+    </div>
+    <span style="font-size:11px;color:#aaa;display:inline-flex;align-items:center;gap:3px;padding:5px 10px;background:#f5f5f2;border-radius:8px;border:1.5px solid #e0e0da;font-weight:500;white-space:nowrap"><i class="ti ti-calendar" style="font-size:11px"></i>Fecha: hoy</span>
+  </div>
+</div>
+ 
+<div style="display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap">
+  ${[['activas','Activas'],['todo','Por hacer'],['wait','Esperando'],['venc','Vencidas'],['done','Completadas']].map(([v,l])=>`<button class="fb${filt===v?' act':''}" onclick="setFilt('${v}')">${l}</button>`).join('')}
+</div>
+ 
+${vProyectos()}`;
+}
+ 
+function vTask(t){
+  const proj=S.projects.find(p=>p.id===t.projectId);
+  const ov=isOD(t);const days=ov?daysAgo(t.dueDate):0;
+  let cls='trow';
+  if(t.status==='done')cls+=' t-done';
+  else if(ov)cls+=' t-venc';
+  else if(t.status==='wait')cls+=' t-wait';
+  const col=t.status==='done'?'#1D9E75':ov?'#E24B4A':t.status==='wait'?'#229ED9':'#534AB7';
+  const statusLabel=t.status==='done'?'✅ Completada':t.status==='wait'?'⏳ Esperando respuesta':'📋 Por hacer';
+ 
+  return`<div class="${cls}">
+  <div class="trow-top">
+    <div class="ttxt${t.status==='done'?' tdone-txt':''}">${esc(t.text)}</div>
+    <div class="tactions">
+      <button class="ico-btn edit" onclick="openEditTask('${t.id}')" title="Editar"><i class="ti ti-pencil" style="font-size:16px"></i></button>
+      <button class="ico-btn del" onclick="delTask('${t.id}')" title="Eliminar"><i class="ti ti-trash" style="font-size:16px"></i></button>
+    </div>
+  </div>
+  <div class="tmeta">
+    <span class="badge" style="background:${col}18;color:${col};border:1.5px solid ${col}50;font-size:11px">${statusLabel}</span>
+    ${ov&&t.status!=='done'?`<span class="badge" style="background:#fff0f0;color:#E24B4A;border:1.5px solid #E24B4A">⚠️ ${days} día${days!==1?'s':''} vencida</span>`:''}
+    ${proj?`<span class="badge" style="background:${pCol(proj)}15;color:${pCol(proj)};border:1.5px solid ${pCol(proj)}40">📁 ${esc(proj.name)}</span>`:''}
+    ${t.dueDate?`<span class="badge" style="background:#f5f5f2;color:#aaa;border:1.5px solid #e0e0da">📅 ${fmtDate(t.dueDate)}</span>`:''}
+  </div>
+  <div style="border-top:1.5px solid #f0f0ec;padding-top:11px;display:flex;gap:5px;flex-wrap:wrap">
+    <button class="sb${t.status==='todo'?' sb-todo':''}" onclick="setStatus('${t.id}','todo')">📋 Por hacer</button>
+    <button class="sb${t.status==='wait'?' sb-wait':''}" onclick="setStatus('${t.id}','wait')">⏳ Esperando</button>
+    <button class="sb${t.status==='done'?' sb-done':''}" onclick="setStatus('${t.id}','done')">✅ Listo</button>
   </div>
 </div>`;
 }
-loadS();render();checkRem();setInterval(checkRem,60000);
+ 
+// ── PROYECTOS ────────────────────────────────────────────────
+function vProyectos(){
+  return`
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+  <div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.7px;display:flex;align-items:center;gap:6px"><i class="ti ti-folders" style="font-size:14px"></i>Proyectos</div>
+  <button class="btn" style="font-size:11px;padding:5px 11px" onclick="document.getElementById('npanel').style.display=document.getElementById('npanel').style.display==='none'?'flex':'none'"><i class="ti ti-plus"></i>Nuevo</button>
+</div>
+<div id="npanel" style="display:none;flex-wrap:wrap;gap:6px;background:#fff;border:1.5px solid #e0e0da;border-radius:11px;padding:12px;margin-bottom:12px;box-shadow:0 1px 5px rgba(0,0,0,0.05)">
+  <input type="text" id="pname" class="inp" placeholder="Nombre del proyecto..." style="flex:1;min-width:140px" onkeydown="if(event.key==='Enter')addProj()" />
+  <select id="pcat" class="sel">
+    <option value="business">💼 Business</option>
+    <option value="personal">🏠 Personal</option>
+  </select>
+  <button class="btn btng" onclick="addProj()"><i class="ti ti-plus"></i>Crear</button>
+</div>
+${['business','personal'].map(c=>vCat(c)).join('')}`;
+}
+ 
+function vCat(c){
+  const cfg=CATS[c];
+  const projs=S.projects.filter(p=>p.category===c);
+  const isOpen=openCats[c]!==false;
+  const allSubs=projs.flatMap(p=>S.subtasks.filter(s=>s.projectId===p.id));
+  const doneSubs=allSubs.filter(s=>s.done).length;
+  const catPct=allSubs.length?Math.round(doneSubs/allSubs.length*100):0;
+  return`<div style="margin-bottom:14px">
+  <div class="cat-hdr" style="background:${cfg.bg};border-color:${cfg.color}40;border:1.5px solid ${cfg.color}40" onclick="togCat('${c}')">
+    <i class="ti ${cfg.icon}" style="font-size:17px;color:${cfg.color}"></i>
+    <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:${cfg.color};flex:1">${cfg.label}</span>
+    <span style="font-size:11px;color:${cfg.color};opacity:0.7;margin-right:8px;font-weight:600">${projs.length} proyecto${projs.length!==1?'s':''}</span>
+    ${allSubs.length?`<div style="display:flex;align-items:center;gap:6px;margin-right:6px">
+      <div class="pw" style="width:60px;background:${cfg.color}20"><div class="pf" style="width:${catPct}%;background:${cfg.color}"></div></div>
+      <span style="font-size:11px;color:${cfg.color};font-weight:700">${catPct}%</span>
+    </div>`:''}
+    <i class="ti ti-chevron-${isOpen?'up':'down'}" style="font-size:12px;color:${cfg.color}"></i>
+  </div>
+  ${isOpen?`<div class="proj-grid">${projs.length
+    ?projs.map(p=>vProj(p)).join('')
+    :`<div style="font-size:12px;color:#ccc;padding:14px;background:#fff;border-radius:14px;border:2px dashed #e0e0da;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;text-align:center">Sin proyectos en ${cfg.label}<br>— crea uno arriba</div>`
+  }</div>`:''}
+</div>`;
+}
+ 
+function vProj(p){
+  const subs=S.subtasks.filter(s=>s.projectId===p.id);
+  let projTasks=S.tasks.filter(t=>t.projectId===p.id);
+  const doneSubs=subs.filter(s=>s.done).length;
+  const doneTasks=projTasks.filter(t=>t.status==='done').length;
+  const totalItems=subs.length+projTasks.length;
+  const doneItems=doneSubs+doneTasks;
+  const pct=totalItems?Math.round(doneItems/totalItems*100):0;
+  const col=pCol(p);
+  const isOpen=!!openProjs[p.id];
+  const pendTasks=projTasks.filter(t=>t.status==='todo').length;
+  const waitTasks=projTasks.filter(t=>t.status==='wait').length;
+  const pendSubs=subs.filter(s=>!s.done).length;
+ 
+  if(filt==='todo')projTasks=projTasks.filter(t=>t.status==='todo');
+  else if(filt==='wait')projTasks=projTasks.filter(t=>t.status==='wait');
+  else if(filt==='venc')projTasks=projTasks.filter(t=>isOD(t));
+  else if(filt==='done')projTasks=projTasks.filter(t=>t.status==='done');
+  else projTasks=projTasks.filter(t=>t.status!=='done');
+ 
+  // Square card — always visible summary, expand for details
+  return`<div class="proj-card" style="border-top:6px solid ${col}">
+  <div style="padding:16px;flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+        <span style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0;box-shadow:0 0 7px ${col}80"></span>
+        <span style="font-size:15px;font-weight:800;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</span>
+      </div>
+      <div style="display:flex;gap:2px;flex-shrink:0;margin-left:4px">
+        <button class="ico-btn edit" onclick="openEditProj('${p.id}')" title="Editar"><i class="ti ti-pencil" style="font-size:13px"></i></button>
+        <button class="ico-btn del" onclick="delProj('${p.id}')" title="Eliminar"><i class="ti ti-trash" style="font-size:13px"></i></button>
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:5px">
+        <span style="color:#aaa">${doneItems}/${totalItems} completados</span>
+        <span style="color:${col}">${pct}%</span>
+      </div>
+      <div class="pw" style="height:8px;border-radius:99px"><div class="pf" style="width:${pct}%;background:${col}"></div></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      ${pendTasks?`<span class="badge" style="background:#f0effe;color:#534AB7;border:1.5px solid #534AB720">📋 ${pendTasks} tarea${pendTasks!==1?'s':''}</span>`:''}
+      ${waitTasks?`<span class="badge" style="background:#edf5fd;color:#229ED9;border:1.5px solid #229ED920">⏳ ${waitTasks}</span>`:''}
+      ${pendSubs?`<span class="badge" style="background:#f5f5f2;color:#888;border:1.5px solid #e0e0da">🔧 ${pendSubs} paso${pendSubs!==1?'s':''}</span>`:''}
+      ${totalItems===0?`<span style="font-size:11px;color:#ccc">Sin tareas aún</span>`:''}
+    </div>
+    <div style="margin-top:auto">
+      <button onclick="togProj('${p.id}')" style="width:100%;padding:8px;border-radius:9px;border:1.5px solid ${col}30;background:${col}10;color:${col};font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px">
+        <i class="ti ti-${isOpen?'chevron-up':'chevron-down'}" style="font-size:13px"></i>
+        ${isOpen?'Cerrar':'Ver detalles'}
+      </button>
+    </div>
+  </div>
+  ${isOpen?`<div style="border-top:2px solid #f0f0ec;padding:14px;background:#fafaf8">
+    ${subs.length?`<div style="margin-bottom:12px">
+      <div style="font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px">Pasos</div>
+      ${subs.map(s=>`<div class="sub-row">
+        <input type="checkbox" ${s.done?'checked':''} onchange="togSub('${s.id}')" style="accent-color:${col};width:15px;height:15px;cursor:pointer;flex-shrink:0" />
+        <span style="flex:1;font-size:12px;color:${s.done?'#bbb':'#1a1a1a'};font-weight:${s.done?'400':'500'};${s.done?'text-decoration:line-through':''}">${esc(s.text)}</span>
+        <button class="ico-btn edit" onclick="openEditSub('${s.id}')" title="Editar"><i class="ti ti-pencil" style="font-size:12px"></i></button>
+        <button class="ico-btn del" onclick="delSub('${s.id}')" title="Eliminar"><i class="ti ti-x" style="font-size:12px"></i></button>
+      </div>`).join('')}
+    </div>`:''}
+    ${projTasks.length?`<div style="margin-bottom:12px">
+      <div style="font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Tareas</div>
+      <div class="task-grid">${projTasks.map(t=>vTask(t)).join('')}</div>
+    </div>`:''}
+    <div class="dv"></div>
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+      <input type="text" id="si-${p.id}" class="inp" placeholder="Agregar paso..." style="flex:1;font-size:12px;padding:8px 11px" onkeydown="if(event.key==='Enter')addSub('${p.id}')" />
+      <button class="btn btng" style="padding:8px 12px;font-size:12px" onclick="addSub('${p.id}')"><i class="ti ti-plus"></i></button>
+    </div>
+  </div>`:''}
+</div>`;
+}
+ 
+ 
+// ── TAB POMODORO ─────────────────────────────────────────────
+function vPom(){
+  const iW=S.pom.mode==='work';const col=iW?'#534AB7':'#1D9E75';
+  const tot=iW?1500:300,r=85,circ=2*Math.PI*r;
+  const offset=circ-(circ*(1-S.pom.secs/tot));
+  return`
+<div class="card" style="text-align:center;padding:24px">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:${col};margin-bottom:16px">${iW?'⚡ Sesión de trabajo':'☕ Descanso'} — Sesión ${S.pom.sessions+1}</div>
+  <div class="pom-ring">
+    <svg class="pom-svg" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="${r}" fill="none" stroke="${col}15" stroke-width="10"/>
+      <circle id="pc" cx="100" cy="100" r="${r}" fill="none" stroke="${col}" stroke-width="10"
+        stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"
+        style="transition:stroke-dashoffset 1s linear;filter:drop-shadow(0 0 5px ${col}60)"/>
+    </svg>
+    <div id="ptd" class="pom-time" style="color:${col}">${fmtSecs(S.pom.secs)}</div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:${col};margin-top:6px;opacity:0.7">${iW?'Trabaja':'Descansa'}</div>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:${S.pom.sessions?'12px':'0'}">
+    ${!S.pom.running
+      ?`<button class="btn btnp" style="padding:12px 28px;font-size:14px" onclick="startPom()"><i class="ti ti-player-play"></i>Iniciar 25 min</button>`
+      :`<button class="btn" style="padding:12px 28px;font-size:14px" onclick="pausePom()"><i class="ti ti-player-pause"></i>Pausar</button>`}
+    <button class="btn" style="padding:12px 16px" onclick="resetPom()"><i class="ti ti-refresh"></i></button>
+  </div>
+  ${S.pom.sessions?`<div style="font-size:12px;color:#aaa;font-weight:500">${S.pom.sessions} pomodoro${S.pom.sessions!==1?'s':''} hoy 🍅</div>`:''}
+</div>
+<div class="card">
+  <div style="font-size:13px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:7px"><i class="ti ti-brain" style="color:#534AB7;font-size:16px"></i>Descarga mental</div>
+  <p style="font-size:12px;color:#aaa;margin-bottom:10px;line-height:1.5">Vacía tu cabeza aquí. Sin estructura, sin juzgarte. Solo escribe lo que tienes dentro.</p>
+  <textarea class="brain-area" placeholder="¿Qué te está pesando ahora mismo?&#10;¿Qué no puedes olvidar?&#10;¿Qué urge?&#10;&#10;Todo va aquí." oninput="S.notas=this.value;save()">${esc(S.notas)}</textarea>
+  <div style="display:flex;justify-content:flex-end;margin-top:8px">
+    <button class="btn" style="font-size:11px;padding:5px 11px;color:#aaa" onclick="if(confirm('¿Limpiar el bloc?')){S.notas='';save();render();}"><i class="ti ti-trash" style="font-size:11px"></i>Limpiar</button>
+  </div>
+</div>`;
+}
+ 
+// ── TAB AJUSTES ──────────────────────────────────────────────
+function vAjustes(){
+  const conn=S.cfg.enabled&&S.cfg.token&&S.cfg.chatId;
+  return`
+<div class="csec">
+  <div style="font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px"><i class="ti ti-brand-telegram" style="font-size:18px;color:#229ED9"></i>Recordatorios por Telegram</div>
+  ${conn?`<div style="display:flex;align-items:center;gap:7px;background:#edfaf5;border:1.5px solid #1D9E75;border-radius:10px;padding:10px 13px;font-size:12px;color:#1D9E75;margin-bottom:12px;font-weight:600"><i class="ti ti-circle-check"></i>Telegram conectado — mensajes motivadores activos</div>`:''}
+  <div style="background:#f5f5f2;border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;color:#888;line-height:1.85;border:1.5px solid #e0e0da">
+    <b style="color:#1a1a1a">Setup (2 min):</b><br>
+    1. Busca <b style="color:#1a1a1a">@BotFather</b> en Telegram → <b style="color:#1a1a1a">/newbot</b><br>
+    2. Copia el token que te da<br>
+    3. Manda cualquier mensaje a tu bot nuevo<br>
+    4. Pega el token abajo → "Obtener Chat ID"
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+    <input type="text" id="tok" value="${esc(S.cfg.token)}" placeholder="Token del bot (123456:AABBcc...)" class="inp" style="flex:1;min-width:180px" />
+    <button class="btn btntg" onclick="getChatId()"><i class="ti ti-search"></i>Obtener Chat ID</button>
+  </div>
+  <div style="margin-bottom:8px">
+    <input type="text" id="cid" value="${esc(S.cfg.chatId)}" placeholder="Chat ID — escríbelo o usa el botón" class="inp" />
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+    <label style="font-size:12px;color:#888;font-weight:500">Revisión diaria a las:</label>
+    <input type="time" id="dtime" value="${S.cfg.dailyTime||'09:00'}" />
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+    <input type="checkbox" id="ena" ${S.cfg.enabled?'checked':''} style="width:16px;height:16px;accent-color:#229ED9" />
+    <label for="ena" style="font-size:13px;cursor:pointer;font-weight:500">Activar recordatorios</label>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <button class="btn btng" onclick="saveCfg()"><i class="ti ti-device-floppy"></i>Guardar</button>
+    <button class="btn btntg" onclick="testTG()"><i class="ti ti-send"></i>Enviar prueba</button>
+    <span id="tm" style="font-size:12px;font-weight:600"></span>
+  </div>
+</div>
+<div class="csec">
+  <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px"><i class="ti ti-trophy" style="color:#f59e0b;font-size:16px"></i>Tu progreso</div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-v" style="color:#534AB7">${S.g.xp}</div><div class="stat-l">XP Total</div></div>
+    <div class="stat"><div class="stat-v" style="color:#f59e0b">Nv.${S.g.level}</div><div class="stat-l">${getLvName(S.g.xp)}</div></div>
+    <div class="stat"><div class="stat-v" style="color:#f59e0b">${S.g.streak}</div><div class="stat-l">Racha días</div></div>
+    <div class="stat"><div class="stat-v" style="color:#1D9E75">${S.pom.sessions}</div><div class="stat-l">Pomodoros 🍅</div></div>
+  </div>
+  <div style="background:#f5f5f2;border-radius:10px;padding:12px;font-size:12px;color:#888;line-height:1.7;border:1.5px solid #e0e0da;margin-top:4px">
+    <b style="color:#534AB7">Próximo nivel:</b> ${LVLS[Math.min(getLv(S.g.xp),9)]?.n||'MAX'} — te faltan <b style="color:#1a1a1a">${Math.max(0,(LVLS[Math.min(getLv(S.g.xp),9)]?.x||0)-S.g.xp)} XP</b><br>
+    <b style="color:#1D9E75">+15 XP</b> por tarea · <b style="color:#1D9E75">+8 XP</b> por paso de proyecto
+  </div>
+</div>`;
+}
+ 
+// ── TELEGRAM CONFIG ───────────────────────────────────────────
+async function getChatId(){
+  const tok=document.getElementById('tok')?.value?.trim();const m=document.getElementById('tm');
+  if(!tok){if(m){m.textContent='Ingresa el token primero';m.style.color='#E24B4A';}return;}
+  if(m){m.textContent='Buscando...';m.style.color='#888';}
+  try{
+    const r=await fetch(`https://api.telegram.org/bot${tok}/getUpdates`);const d=await r.json();
+    if(!d.ok){if(m){m.textContent='Token inválido';m.style.color='#E24B4A';}return;}
+    if(!d.result?.length){if(m){m.textContent='Envía un mensaje al bot primero';m.style.color='#f59e0b';}return;}
+    const cid=String(d.result[d.result.length-1].message?.chat?.id||'');
+    if(!cid){if(m){m.textContent='No se encontró Chat ID';m.style.color='#f59e0b';}return;}
+    document.getElementById('cid').value=cid;
+    if(m){m.textContent='✓ Chat ID: '+cid;m.style.color='#1D9E75';}
+  }catch(e){if(m){m.textContent='Error de conexión';m.style.color='#E24B4A';}}
+}
+function saveCfg(){
+  S.cfg.token=document.getElementById('tok')?.value?.trim()||'';
+  S.cfg.chatId=document.getElementById('cid')?.value?.trim()||'';
+  S.cfg.dailyTime=document.getElementById('dtime')?.value||'09:00';
+  S.cfg.enabled=document.getElementById('ena')?.checked||false;
+  save();const m=document.getElementById('tm');
+  if(m){m.textContent='Guardado ✓';m.style.color='#1D9E75';setTimeout(()=>{if(m)m.textContent=''},3000);}render();
+}
+async function testTG(){
+  const tok=document.getElementById('tok')?.value?.trim();const cid=document.getElementById('cid')?.value?.trim();const m=document.getElementById('tm');
+  if(!tok||!cid){if(m){m.textContent='Necesitas token y Chat ID';m.style.color='#E24B4A';}return;}
+  if(m){m.textContent='Enviando...';m.style.color='#888';}
+  try{
+    const r=await fetch(`https://api.telegram.org/bot${tok}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:cid,parse_mode:'HTML',text:`🚀 <b>Tu sistema está activo.</b>\n\nEstas notificaciones son para recordarte que estás construyendo algo real, un día a la vez.\n\n🔥 Racha: ${S.g.streak} días\n⚡ ${getLvName(S.g.xp)} (Nv.${S.g.level})\n📋 Por hacer: ${S.tasks.filter(t=>t.status==='todo').length}\n⏳ Esperando: ${S.tasks.filter(t=>t.status==='wait').length}\n\n⏱️ Recibirás un recordatorio motivador cada 20 minutos con tus tareas al frente. Tú puedes con esto. 💪`})});
+    const d=await r.json();
+    if(d.ok){if(m){m.textContent='Revisa Telegram ✓';m.style.color='#1D9E75';setTimeout(()=>{if(m)m.textContent=''},5000);}}
+    else{if(m){m.textContent='Error: '+(d.description||'');m.style.color='#E24B4A';}}
+  }catch(e){if(m){m.textContent='Error de conexión';m.style.color='#E24B4A';}}
+}
+ 
+// ── INIT ─────────────────────────────────────────────────────
+load();render();checkRem();
+setInterval(checkRem,60000);       // check daily reminder every 1 min
+setInterval(push20,20*60*1000);    // motivational push every 20 min
+setTimeout(push20,30000);          // first push 30 sec after load (to confirm it works)
 </script>
 </body>
 </html>
